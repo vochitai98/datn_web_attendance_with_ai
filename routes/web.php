@@ -28,12 +28,15 @@ Route::get('/change_password', [Controller::class, 'changePassword'])->name('cha
 //router admin
 Route::get('/admin', [AdminController::class, 'home'])->name('admin_home');
 Route::get('/class_management', [AdminController::class, 'classManagement'])->name('admin.class_management');
+Route::get('/class_edit', [AdminController::class, 'classEdit'])->name('admin.class_edit');
 Route::get('/teacher_management', [AdminController::class, 'teacherManagement'])->name('admin.teacher_management');
 Route::get('/student_management', [AdminController::class, 'studentManagement'])->name('admin.student_management');
 Route::get('/class_management/search_users', [AdminController::class, 'searchUsers'])->name('search_users');
-Route::get('/class_edit', [AdminController::class, 'classEdit'])->name('admin.class_edit');
-Route::get('/teacher_management/user_edit', [AdminController::class, 'userEdit'])->name('admin.user_edit');
-Route::post('/teacher_management/user_add_handle', [AdminController::class, 'teacherAdd'])->name('admin.user_add_handle');
+Route::get('/teacher_management/teacher_edit', [AdminController::class, 'teacherEdit'])->name('admin.teacher_edit');
+Route::get('/student_management/student_edit', [AdminController::class, 'studentEdit'])->name('admin.student_edit');
+Route::post('/student_management/student_edit_handle', [AdminController::class, 'studentEditHandle'])->name('admin.student_edit_handle');
+Route::post('/teacher_management/teacher_edit_handle', [AdminController::class, 'teacherEditHandle'])->name('admin.teacher_edit_handle');
+
 Route::post('/class_management/class_add_handle', [AdminController::class, 'classAdd'])->name('admin.class_add_handle');
 
 

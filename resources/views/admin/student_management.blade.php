@@ -39,6 +39,7 @@
             <tr>
                 <th scope="col">STT</th>
                 <th scope="col" class="text-center">Name</th>
+                <th scope="col" class="text-center">Student ID</th>
                 <th scope="col" class="text-center">Class</th>
                 <th scope="col" class="text-center">Phone</th>
                 <th scope="col" class="text-center">Address</th>
@@ -49,25 +50,19 @@
         <tbody>
             @php
             $stt = 0;
-            $records = [
-            ['id' => 1, 'name' => 'NVA', 'phone' => '0916697020', 'address' => 'DN', 'email' => 'nva@gmail.com', 'class_name' => '19TCLCDT5'],
-            ['id' => 2, 'name' => 'NVB', 'phone' => '0916697022', 'address' => 'HUE', 'email' => 'nvb@gmail.com', 'class_name' => '20TCLCDT5'],
-            ['id' => 3, 'name' => 'NVC', 'phone' => '0916697029', 'address' => 'QT', 'email' => 'nvc@gmail.com', 'class_name' => '21TCLCDT5'],
-            ['id' => 4, 'name' => 'NVD', 'phone' => '0916697027', 'address' => 'HT', 'email' => 'nvd@gmail.com', 'class_name' => '21TCLCDT5'],
-            ];
             @endphp
-            @foreach($records as $record)
+            @foreach($students as $record)
             <tr>
                 <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $record['name'] }}</td>
-                <td class="text-center">{{ $record['class_name'] }}</td>
-                <td class="text-center">{{ $record['phone'] }}</td>
-                <td class="text-center">{{ $record['address'] }}</td>
-                <td class="text-center">{{ $record['email'] }}</td>
+                <td class="text-center">{{ $record->name }}</td>
+                <td class="text-center">{{ $record->identification }}</td>
+                <td class="text-center">{{ $record->className }}</td>
+                <td class="text-center">{{ $record->phone }}</td>
+                <td class="text-center">{{ $record->address }}</td>
+                <td class="text-center">{{ $record->email }}</td>
                 <td class="text-center">
-                    <a href="{{ route('admin.user_edit') }}" class="btn btn-primary">View</a>
-                    <a href="{{ route('admin.user_edit') }}" class="btn btn-secondary">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                    <a href="{{ route('admin.student_edit',['student_id' => $record->id]) }}" class="btn btn-primary">View</a>
+                    <a href="{{ route('admin.student_management',['student_id' => $record->id]) }}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Delete</a>
                 </td>
             </tr>
             @endforeach

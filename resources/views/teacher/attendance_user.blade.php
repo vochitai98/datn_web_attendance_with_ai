@@ -32,11 +32,11 @@
         </div>
     </div>
     <div class="text-center">
-        <h5>My Class Name : 20-TCLC-DT5</h5>
+        <h5>My Class Name : {{$class->name}}</h5>
     </div>
 
     <table class="table">
-        <caption class="caption-top">NVA</caption>
+        <caption class="caption-top">Student name : {{$student->name}}</caption>
         <thead>
             <tr>
                 <th scope="col">STT</th>
@@ -46,20 +46,20 @@
         </thead>
         <tbody>
             @php
+            $absentCount=0;
             $stt = 0;
-            $users = [
-            ['id' => 1, 'attendance_date' => '14-10-2024', 'status' => true],
-            ['id' => 2, 'attendance_date' => '15-10-2024', 'status' => false],
-            ['id' => 3, 'attendance_date' => '17-10-2024', 'status' => false],
-            ['id' => 4, 'attendance_date' => '24-10-2024', 'status' => true],
-            ];
+            foreach($attendance_users as $user) {
+            if(!$user->status) {
+            $absentCount++;
+                }
+            }
             @endphp
-            @foreach($users as $user)
+            @foreach($attendance_users as $user)
             <tr>
                 <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $user['attendance_date'] }}</td>
+                <td class="text-center">{{ $user->attendance_date }}</td>
                 <td class="text-center">
-                    @if($user['status'])
+                    @if($user->status)
                     <span class="badge bg-success">v</span> <!-- Label tích v (đã điểm danh) -->
                     @else
                     <span class="badge bg-danger">x</span> <!-- Label tích x (chưa điểm danh) -->
@@ -70,7 +70,7 @@
 
         </tbody>
     </table>
-    <div>Số buổi vắng : 2 </div>
+    <div>Số buổi vắng : {{$absentCount}} </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

@@ -116,8 +116,15 @@ class TeacherController extends Controller
 
     public function attendanceUser(Request $request)
     {
-        
-        return view('teacher.attendance_user');
+        $student_id = $request->input('student_id');
+        $class_id = $request->input('class_id');
+        $attendance_users = DB::table('attendance_records')
+        ->where('student_id', $student_id)
+        ->select('attendance_records.*')
+        ->get();
+        $class = DB::table('classes')->find($class_id);
+        $student = DB::table('students')->find($student_id);
+        return view('teacher.attendance_user', compact('attendance_users', 'class', 'student'));
     }
 
     public function attendanceUserList(Request $request)
@@ -128,9 +135,10 @@ class TeacherController extends Controller
             ->join('students', 'students.id', '=', 'attendance_records.student_id')
             ->where('students.class_id', $class_id)
             ->where('attendance_records.attendance_date', $date)
-            ->select('students.id', 'students.name', 'students.identifi', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date')
+            ->select('students.id', 'students.name', 'students.identification', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date')
             ->get();
-        return view('teacher.attendance_user_list', compact('attendance_records'));
+        $class = DB::table('classes')->find($class_id);
+        return view('teacher.attendance_user_list', compact('attendance_records','class'));
     }
     
 }

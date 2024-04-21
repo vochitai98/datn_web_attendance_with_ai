@@ -24,7 +24,7 @@
                 </form>
             </div>
             <div class="col-sm-4 text-end">
-                <a href="{{ route('admin.user_edit') }}" class="btn btn-primary">Add Teacher</a>
+                <a href="{{ route('admin.teacher_edit') }}" class="btn btn-primary">Add Teacher</a>
             </div>
         </div>
     </div>
@@ -34,6 +34,7 @@
             <tr>
                 <th scope="col">STT</th>
                 <th scope="col" class="text-center">Name</th>
+                <th scope="col" class="text-center">Teacher ID</th>
                 <th scope="col" class="text-center">Class</th>
                 <th scope="col" class="text-center">Phone</th>
                 <th scope="col" class="text-center">Address</th>
@@ -44,25 +45,25 @@
         <tbody>
             @php
             $stt = 0;
-            $records = [
-            ['id' => 1, 'name' => 'Co A', 'phone' => '0916697020', 'address' => 'DN', 'email' => 'nva@gmail.com', 'class_name' => '19TCLCDT5'],
-            ['id' => 2, 'name' => 'Co B', 'phone' => '0916697022', 'address' => 'HUE', 'email' => 'nvb@gmail.com', 'class_name' => '20TCLCDT5'],
-            ['id' => 3, 'name' => 'Co C', 'phone' => '0916697029', 'address' => 'QT', 'email' => 'nvc@gmail.com', 'class_name' => '21TCLCDT5'],
-            ['id' => 4, 'name' => 'Co D', 'phone' => '0916697027', 'address' => 'HT', 'email' => 'nvd@gmail.com', 'class_name' => 'Chưa Đảm nhiệm'],
-            ];
             @endphp
-            @foreach($records as $record)
+            @foreach($teachers as $record)
             <tr>
                 <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $record['name'] }}</td>
-                <td class="text-center">{{ $record['class_name'] }}</td>
-                <td class="text-center">{{ $record['phone'] }}</td>
-                <td class="text-center">{{ $record['address'] }}</td>
-                <td class="text-center">{{ $record['email'] }}</td>
+                <td class="text-center">{{ $record->name }}</td>
+                <td class="text-center">{{ $record->identification }}</td>
                 <td class="text-center">
-                    <a href="{{ route('admin.user_edit') }}" class="btn btn-primary">View</a>
-                    <a href="{{ route('admin.user_edit') }}" class="btn btn-secondary">Edit</a>
-                    <a href="#" class="btn btn-danger">Delete</a>
+                    @if($record->className)
+                    {{ $record->className }}
+                    @else
+                    Not yet in charge
+                    @endif
+                </td>
+                <td class="text-center">{{ $record->phone }}</td>
+                <td class="text-center">{{ $record->address }}</td>
+                <td class="text-center">{{ $record->email }}</td>
+                <td class="text-center">
+                    <a href="{{ route('admin.teacher_edit',['teacher_id' => $record->id]) }}" class="btn btn-primary">View</a>
+                    <a href="{{ route('admin.teacher_management',['teacher_id' => $record->id]) }}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Delete</a>
                 </td>
             </tr>
             @endforeach

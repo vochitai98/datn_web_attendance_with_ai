@@ -37,15 +37,20 @@
             </tr>
         </thead>
         <tbody>
+            @php
+            $stt = 0;
+            @endphp
+            @foreach($classes as $class)
             <tr>
-                <th scope="row">1</th>
-                <td class="text-center">20 TCLC DT5</td>
+                <th scope="row">{{ ++$stt }}</th>
+                <td class="text-center">{{ $class->name }}</td>
+
                 <td class="text-center">
-                    <button type="button" class="btn btn-primary">View</button>
-                    <button type="button" class="btn btn-secondary">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <a href="{{ route('admin.class_edit',['class_id' => $class->id]) }}" class=" btn btn-primary">View</a>
+                    <a href="{{ route('admin.class_management',['class_id' => $class->id]) }}" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Delete</a>
                 </td>
             </tr>
+            @endforeach
         </tbody>
     </table>
 

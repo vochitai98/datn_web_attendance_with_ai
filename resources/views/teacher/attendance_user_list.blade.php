@@ -15,7 +15,7 @@
     <!-- Nội dung trang Class Management -->
     <h6>home > attendane management > detail</h6>
     <div class="text-center">
-        <h5>My Class Name : 20-TCLC-DT5</h5>
+        <h5>My Class Name : {{$class->name}}</h5>
     </div>
     <div class="col-md-2">
         <label for="statusSearch" class="form-label">Select Status</label>
@@ -48,7 +48,7 @@
             <tr>
                 <th scope="row">{{ ++$stt }}</th>
                 <td class="text-center">{{ $record->name }}</td>
-                <td class="text-center">{{ $record->identifi }}</td>
+                <td class="text-center">{{ $record->identification }}</td>
                 <td class="text-center">{{ $record->phone }}</td>
                 <td class="text-center">{{ $record->address }}</td>
                 <td class="text-center">{{ $record->email }}</td>
@@ -60,7 +60,7 @@
                     @endif
                 </td>
                 <td class="text-center">
-                    <a href="{{ route('teacher.attendance_user') }}" data-id="{{ $record->id }}" class=" btn btn-primary">View</a>
+                    <a href="{{ route('teacher.attendance_user',['student_id' => $record->id, 'class_id' => $class->id]) }}" class=" btn btn-primary">View</a>
                 </td>
             </tr>
             @endforeach

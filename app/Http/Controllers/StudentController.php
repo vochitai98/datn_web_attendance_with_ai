@@ -102,7 +102,7 @@ class StudentController extends Controller
             $user->dayofbirth = $validatedData['dob'];
             $user->class_id = $validatedData['class_id'];
             $user->address = $validatedData['address'];
-            $user->identifi = $validatedData['identification'];
+            $user->identification = $validatedData['identification'];
             // Thực hiện lưu vào cơ sở dữ liệu
             $user->save();
 

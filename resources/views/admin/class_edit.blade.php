@@ -13,15 +13,15 @@
     @include('admin.header')
 
     @if(isset($id))
-    <h6>Home > Class Management > edit</h6>
+    <h6>home > class management > edit</h6>
     @else
-    <h6>Home > Class Management > add</h6>
+    <h6>home > class management > add</h6>
     @endif
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    @if(isset($id))
+                    @if(isset($class->id))
                     <div class="card-header">
                         Edit Class
                     </div>
@@ -36,20 +36,26 @@
                             @csrf <!-- Sử dụng trong Laravel để chống CSRF attacks -->
                             <div class="mb-3">
                                 <label for="className" class="form-label">Class Name</label>
-                                <input type="text" class="form-control" id="className" name="className" placeholder="Enter class name" required>
+                                <input type="text" class="form-control" id="className" name="className" placeholder="Enter class name" value="{{ isset($class->id) ? $class->name : '' }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="teacher_id" class="form-label">Teacher</label>
                                 <select class="form-select" id="teacher_id" name="teacher_id" required>
                                     <option selected disabled>Select Teacher</option>
                                     @foreach($teachers as $teacher)
-                                    <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                    <option value="{{ $teacher->id }}" {{ isset($class->id) && $class->teacher_id == $teacher->id ? 'selected' : '' }}>{{ $teacher->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            @if(isset($class->id))
+                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                            @else
                             <button type="submit" class="btn btn-primary me-2">Add</button>
+                            @endif
+
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
                         </form>
+
                     </div>
                 </div>
             </div>
