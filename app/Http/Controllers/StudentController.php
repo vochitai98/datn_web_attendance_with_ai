@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Http;
 use App\Models\Classes;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\DB;
+
 class StudentController extends Controller
 {
     public function home()
@@ -16,9 +18,37 @@ class StudentController extends Controller
         return view('student.student_home');
     }
 
-    public function attendanceManagement()
+    public function attendanceManagement(Request $request)
     {
-        return view('student.attendance_management');
+        $username = session('username');
+        $dateSearch = $request->input('dateSearch');
+        $statusSearch = $request->input('statusSearch');
+
+        $student = DB::table('students')
+            ->join('classes', 'students.class_id', '=', 'classes.id')
+            ->where('username', $username)
+            ->select('students.*','classes.name as className')
+            ->first();
+
+        // $attendance_records = DB::table('attendance_records')
+        //     ->where('student_id', $student->id)
+        //     ->select('attendance_records.*')
+        //     ->get();
+        $query = DB::table('attendance_records')
+            ->select('attendance_records.*')
+            ->where('student_id', $student->id);
+        
+
+        if (isset($dateSearch)) {
+            $query->where('attendance_date', $dateSearch);
+        }
+
+        if (isset($statusSearch)) {
+            $query->where('status', $statusSearch);
+        }
+
+        $attendance_records = $query->get();
+        return view('student.attendance_management',compact('student', 'attendance_records'));
     }
 
     public function register(Request $request)
@@ -114,4 +144,11 @@ class StudentController extends Controller
         }
     }
 
+
+    public function changePassword()
+    {
+        $username = session('username');
+        return view('student.change_password',compact('username'));
+    }
+    
 }

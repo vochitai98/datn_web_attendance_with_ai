@@ -140,5 +140,10 @@ class TeacherController extends Controller
         $class = DB::table('classes')->find($class_id);
         return view('teacher.attendance_user_list', compact('attendance_records','class'));
     }
-    
+
+    public function changePassword()
+    {
+        $username = session('username');
+        return view('teacher.change_password', compact('username'));
+    }
 }

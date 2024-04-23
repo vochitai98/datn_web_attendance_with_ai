@@ -24,7 +24,10 @@ Route::get('/', function () {
 //login page
 Route::get('/login', [Controller::class, 'login'])->name('login');
 Route::post('/login_handle', [Controller::class, 'loginHandle'])->name('login_handle');
-Route::get('/change_password', [Controller::class, 'changePassword'])->name('change_password');
+Route::post('/change_password_handle', [Controller::class, 'changePasswordHandle'])->name('change_password_handle');
+
+
+Route::get('/home', [Controller::class, 'home'])->name('home');
 //router admin
 Route::get('/admin', [AdminController::class, 'home'])->name('admin_home');
 Route::get('/class_management', [AdminController::class, 'classManagement'])->name('admin.class_management');
@@ -38,7 +41,7 @@ Route::post('/student_management/student_edit_handle', [AdminController::class, 
 Route::post('/teacher_management/teacher_edit_handle', [AdminController::class, 'teacherEditHandle'])->name('admin.teacher_edit_handle');
 
 Route::post('/class_management/class_add_handle', [AdminController::class, 'classAdd'])->name('admin.class_add_handle');
-
+Route::get('/admin_change_password', [AdminController::class, 'changePassword'])->name('admin.change_password');
 
 
 //router student
@@ -46,7 +49,9 @@ Route::get('/student', [StudentController::class, 'home'])->name('student_home')
 Route::get('/attendancnagement', [StudentController::class, 'attendanceManagement'])->name('student.attendance_management');
 Route::get('/register', [StudentController::class, 'register'])->name('student.register');
 Route::post('/register/next_page', [StudentController::class, 'registerNextPage'])->name('student.register_next_page');
-Route::Post('/register_handle', [StudentController::class, 'registerHandle'])->name('student.register_handle');
+Route::post('/register_handle', [StudentController::class, 'registerHandle'])->name('student.register_handle');
+Route::get('/student_change_password', [StudentController::class, 'changePassword'])->name('student.change_password');
+
 
 //router teacher
 Route::get('/teacher', [TeacherController::class, 'home'])->name('teacher_home');
@@ -54,3 +59,4 @@ Route::get('/attendance_management', [TeacherController::class, 'attendanceManag
 Route::get('/attendance_management/attendance_user', [TeacherController::class, 'attendanceUser'])->name('teacher.attendance_user');
 Route::get('/attendance_management/attendance_user/detail', [TeacherController::class, 'attendanceUserList'])->name('teacher.attendance_user_list');
 Route::post('/process_attendance', [TeacherController::class, 'processAttendance'])->name('teacher.process_attendance');
+Route::get('/teacher_change_password', [TeacherController::class, 'changePassword'])->name('teacher.change_password');

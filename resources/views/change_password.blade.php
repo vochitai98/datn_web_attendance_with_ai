@@ -18,11 +18,23 @@
                         Change Password
                     </div>
                     <div class="card-body">
-                        <form action="#" method="POST">
+                        <!-- Alert -->
+                        @if(session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                        @endif
+                        @if(session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+                        <!-- End Alert -->
+                        <form action="{{ route('change_password_handle') }}" method="POST">
                             @csrf <!-- Laravel CSRF token -->
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="username" class="form-control" id="username" name="username" required>
+                                <input type="username" class="form-control" id="username" name="username" value="{{$username}}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="current_password" class="form-label">Current Password</label>

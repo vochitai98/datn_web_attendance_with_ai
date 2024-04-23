@@ -24,7 +24,7 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-                <li><a class="dropdown-item" href="#">Change Password</a></li>
+                <li><a class="dropdown-item" href="{{ route('student.change_password')}}">Change Password</a></li>
                 <li>
                     <hr class="dropdown-divider">
                 </li>

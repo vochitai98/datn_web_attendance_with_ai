@@ -13,7 +13,7 @@
     @include('admin.header')
 
     @if(isset($teacher->id))
-    <h6>home > teacher management > edit</h6>
+    <h6>home > teacher management > view</h6>
     @else
     <h6>home > teacher management > add</h6>
     @endif
@@ -23,7 +23,7 @@
                 <div class="card">
                     @if(isset($teacher->id))
                     <div class="card-header">
-                        Edit Teacher
+                        Username : {{$teacher->username}}
                     </div>
                     @else
                     <div class="card-header">
@@ -37,14 +37,6 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{ isset($teacher->id) ? $teacher->name : '' }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="{{ isset($teacher->id) ? $teacher->username : '' }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="{{ isset($teacher->id) ?$teacher->password : '' }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -72,6 +64,9 @@
                             <button type="submit" class="btn btn-primary me-2">Add</button>
                             @endif
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='cancel-page-url' " style="float: right;">
+                                <i class=" fas fa-key"></i> Reset Password
+                            </button>
                         </form>
                     </div>
 

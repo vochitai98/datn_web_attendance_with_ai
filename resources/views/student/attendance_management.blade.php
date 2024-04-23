@@ -13,28 +13,32 @@
     <!-- header -->
     @include('student.header')
     <!-- Nội dung trang Class Management -->
-    <h6>Home > Attendane Management</h6>
+    <h6>home > attendane Management</h6>
     <div class="text-center">
-        <h5>My Class Name : 20-TCLC-DT5</h5>
+        <h5>My Class Name : {{$student->className}}</h5>
     </div>
     <!-- Thẻ HTML -->
-    <div class="row mb-6">
-        <div class="col-md-2">
-            <label for="dateSearch" class="form-label">Select Date</label>
-            <input type="date" class="form-control" id="dateSearch" placeholder="Enter date">
+    <form id="filterForm" action="{{ route('student.attendance_management') }}" method="GET">
+        <div class="row mb-6">
+            <div class="col-md-2">
+                <label for="dateSearch" class="form-label">Select Date</label>
+                <input type="date" class="form-control" id="dateSearch" name="dateSearch" placeholder="Enter date" value="{{ isset($_GET['dateSearch']) ? $_GET['dateSearch'] : '' }}">
+            </div>
+            <div class="col-md-2">
+                <label for="statusSearch" class="form-label">Select Status</label>
+                <select class="form-select form-select-sm" id="statusSearch" name="statusSearch">
+                    <option value="" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "" ? 'selected' : '' }}>All</option>
+                    <option value="1" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "1" ? 'selected' : '' }}>Present</option>
+                    <option value="0" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "0" ? 'selected' : '' }}>Absent</option>
+                </select>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
         </div>
-        <div class="col-md-2">
-            <label for="statusSearch" class="form-label">Select Status</label>
-            <select class="form-select form-select-sm" id="statusSearch">
-                <option selected>All</option>
-                <option value="1">Present</option>
-                <option value="0">Absent</option>
-            </select>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end">
-            <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
-        </div>
-    </div>
+    </form>
+
+
 
     <table class="table">
         <caption class="caption-top">Attendance List</caption>
@@ -47,20 +51,20 @@
         </thead>
         <tbody>
             @php
+            $absentCount=0;
             $stt = 0;
-            $records = [
-            ['id' => 1, 'attendance_date' => '14-10-2024', 'status' => true],
-            ['id' => 2, 'attendance_date' => '15-10-2024', 'status' => false],
-            ['id' => 3, 'attendance_date' => '17-10-2024', 'status' => false],
-            ['id' => 4, 'attendance_date' => '24-10-2024', 'status' => true],
-            ];
+            foreach($attendance_records as $record) {
+            if(!$record->status) {
+            $absentCount++;
+            }
+            }
             @endphp
-            @foreach($records as $record)
+            @foreach($attendance_records as $record)
             <tr>
                 <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $record['attendance_date'] }}</td>
+                <td class="text-center">{{ $record->attendance_date }}</td>
                 <td class="text-center">
-                    @if($record['status'])
+                    @if($record->status)
                     <span class="badge bg-success">v</span> <!-- Label tích v (đã điểm danh) -->
                     @else
                     <span class="badge bg-danger">x</span> <!-- Label tích x (chưa điểm danh) -->
@@ -71,7 +75,7 @@
 
         </tbody>
     </table>
-
+    <div>Số buổi vắng : {{$absentCount}} </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

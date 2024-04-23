@@ -13,18 +13,18 @@
     @include('admin.header')
 
     @if(isset($student->id))
-    <h6>home > student management > edit</h6>
+    <h6>home > student management > view</h6>
     @else
     <h6>home > student management > add</h6>
     @endif
-    
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    @if(isset($student->id)||isset($teacher->id))
+                    @if(isset($student->id))
                     <div class="card-header">
-                        Edit User
+                        Username : {{$student->username}}
                     </div>
                     @else
                     <div class="card-header">
@@ -38,14 +38,6 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{ isset($student->id) ? $student->name : '' }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="{{ isset($student->id) ? $student->username : '' }}" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="{{ isset($student->id) ?$student->password : '' }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -84,6 +76,9 @@
                             <button type="submit" class="btn btn-primary me-2">Add</button>
                             @endif
                             <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='cancel-page-url' " style="float: right;">
+                                <i class=" fas fa-key"></i> Reset Password
+                            </button>
                         </form>
                     </div>
 

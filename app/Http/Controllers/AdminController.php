@@ -56,17 +56,7 @@ class AdminController extends Controller
 
     public function teacherEdit(Request $request)
     {
-        // $classes = Classes::all();
-        // $student_id = $request->input('student_id');
         $teacher_id = $request->input('teacher_id');
-        // if(isset($student_id)){
-        //     $student = DB::table('students')
-        //         ->join('classes', 'classes.id', '=', 'students.class_id')
-        //         ->where('students.id', $student_id)
-        //         ->select('students.*', 'classes.name as className')
-        //         ->first();
-        //     return view('admin.user_edit',compact('student','classes'));
-        // }
         if(isset($teacher_id)){
             $teacher = DB::table('teachers')
                 ->where('teachers.id', $teacher_id)
@@ -195,5 +185,11 @@ class AdminController extends Controller
         // Thực hiện lưu vào cơ sở dữ liệu
         $user->save();
         return response()->json(['message' => 'Student updated successfully', 'data' => $user], 201);
+    }
+
+    public function changePassword()
+    {
+        $username = session('username');
+        return view('admin.change_password', compact('username'));
     }
 }
