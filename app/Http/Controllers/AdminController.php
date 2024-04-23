@@ -192,4 +192,18 @@ class AdminController extends Controller
         $username = session('username');
         return view('admin.change_password', compact('username'));
     }
+
+    public function editProfile()
+    {
+        $username = session('username');
+        $is_admin = true;
+        if (isset($username)) {
+            $user = DB::table('admin')
+            ->where('admin.username', $username)
+                ->select('*')
+                ->first();
+            return view('admin.edit_profile', compact('user','is_admin'));
+        }
+        return view('admin.edit_profile', compact('username'));
+    }
 }

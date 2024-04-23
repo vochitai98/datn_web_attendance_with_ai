@@ -150,5 +150,18 @@ class StudentController extends Controller
         $username = session('username');
         return view('student.change_password',compact('username'));
     }
-    
+
+    public function editProfile()
+    {
+        $username = session('username');
+        $classes = Classes::all();
+        if (isset($username)) {
+            $user = DB::table('students')
+            ->where('username', $username)
+            ->select('*')
+                ->first();
+            return view('student.edit_profile', compact('user'));
+        }
+        return view('student.edit_profile', compact('user'));
+    }
 }

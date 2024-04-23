@@ -146,4 +146,17 @@ class TeacherController extends Controller
         $username = session('username');
         return view('teacher.change_password', compact('username'));
     }
+
+    public function editProfile()
+    {
+        $username = session('username');
+        if (isset($username)) {
+            $user = DB::table('teachers')
+            ->where('username', $username)
+                ->select('*')
+                ->first();
+            return view('teacher.edit_profile', compact('user'));
+        }
+        return view('teacher.edit_profile', compact('user'));
+    }
 }

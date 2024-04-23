@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Student;
 use App\Models\Teacher;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class Controller extends BaseController
 {
@@ -111,5 +112,71 @@ class Controller extends BaseController
             //return back with error message: Username is not set!
             return back()->with('error', 'Username is not set!');
         }
+    }
+
+    public function editProfileHandle(Request $request)
+    {
+        $username = $request->input('username');
+        //check username is what role
+        $studentExists = Student::where('username', $username)->exists();
+        $teacherExists = Teacher::where('username', $username)->exists();
+        if ($studentExists) {
+            $user = Student::where('username', $username)->first();
+        } else if ($teacherExists) {
+            $user = Teacher::where('username', $username)->first();
+        } else {
+            $user = Admin::where('username', $username)->first();
+        }
+        $userId = $user->id; 
+        try {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'nullable|email|max:255|unique:teachers,email,' . $userId . '|unique:students,email,' . $userId,
+                'phone' => 'nullable|string|max:15|unique:teachers,phone,' . $userId . '|unique:students,phone,' . $userId,
+                'address' => 'nullable|string|max:255',
+                'identification' => 'nullable|string',
+                'dayofbirth' => 'nullable|date',
+                'avt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                // Add validation rules for other fields
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Handle validation errors
+            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+        }
+
+        if (isset($username)) {
+            if ($studentExists) {
+                $user = Student::where('username', $username)->first();
+                $user->name = $validatedData['name'];
+                $user->email = $validatedData['email'];
+                $user->phone = $validatedData['phone'];
+                $user->address = $validatedData['address'];
+                $user->dayofbirth = $validatedData['dayofbirth'];
+                $user->identification = $validatedData['identification'];
+
+            } else if ($teacherExists) {
+                $user = Teacher::where('username', $username)->first();
+                $user->name = $validatedData['name'];
+                $user->phone = $validatedData['phone'];
+                $user->address = $validatedData['address'];
+                $user->dayofbirth = $validatedData['dayofbirth'];
+                $user->identification = $validatedData['identification'];
+
+            } else {
+                $user = Admin::where('username', $username)->first();
+                $user->name = $validatedData['name'];
+
+            }
+            if ($request->hasFile('avt')) {
+                $imagePath = $request->file('avt')->store('public/images/avt');
+                $imageUrl = Storage::url($imagePath);
+                $imageUrl = str_replace('/storage', 'storage', Storage::url($imagePath));
+                $user->avt = $imageUrl;
+            }
+            $user->save();
+            return redirect()->back()->with('message', 'Cập nhật thành công!');
+        }
+        return response()->json(['message' => 'Username is not exists'], 400);
     }
 }

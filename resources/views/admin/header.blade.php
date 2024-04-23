@@ -32,7 +32,7 @@
                 <div class="text-dark">{{ session('username') }}</div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+                <li><a class="dropdown-item" href="{{ route('admin.edit_profile')}}">Edit Profile</a></li>
                 <li><a class="dropdown-item" href="{{ route('admin.change_password')}}">Change Password</a></li>
                 <li>
                     <hr class="dropdown-divider">
