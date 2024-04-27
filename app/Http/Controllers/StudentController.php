@@ -35,10 +35,10 @@ class StudentController extends Controller
         //     ->select('attendance_records.*')
         //     ->get();
         $query = DB::table('attendance_records')
-            ->select('attendance_records.*')
+            ->join('images', 'attendance_records.image_id', '=', 'images.id')
+            ->select('attendance_records.*','images.image_url')
             ->where('student_id', $student->id);
         
-
         if (isset($dateSearch)) {
             $query->where('attendance_date', $dateSearch);
         }

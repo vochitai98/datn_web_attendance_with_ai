@@ -36,6 +36,8 @@ class TeacherController extends Controller
             ->select('attendance_date')
             ->distinct()
             ->get();
+        }else{
+            return view('teacher.attendance_management');
         }
         return view('teacher.attendance_management',compact('class', 'attendance_dates'));
     }
@@ -138,7 +140,7 @@ class TeacherController extends Controller
             ->select('students.id', 'students.name', 'students.identification', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date')
             ->get();
         $class = DB::table('classes')->find($class_id);
-        return view('teacher.attendance_user_list', compact('attendance_records','class'));
+        return view('teacher.attendance_user_list', compact('attendance_records','class','date'));
     }
 
     public function changePassword()

@@ -45,8 +45,6 @@ Route::post('/class_management/class_add_handle', [AdminController::class, 'clas
 Route::get('/admin_change_password', [AdminController::class, 'changePassword'])->name('admin.change_password');
 Route::get('/admin_edit_profile', [AdminController::class, 'editProfile'])->name('admin.edit_profile');
 
-
-
 //router student
 Route::get('/student', [StudentController::class, 'home'])->name('student_home');
 Route::get('/attendancnagement', [StudentController::class, 'attendanceManagement'])->name('student.attendance_management');

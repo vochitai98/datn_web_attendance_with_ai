@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -12,7 +13,7 @@
     <!-- header -->
     @include('teacher.header')
     <!-- Nội dung trang Class Management -->
-    <h6>home > attendane management > detail</h6>
+    <h6>Home > Attendane management > detail</h6>
     <div class="text-center">
         <h5>My Class Name : {{$class->name}}</h5>
     </div>
@@ -24,8 +25,12 @@
             <option value="0">Absent</option>
         </select>
     </div>
+    @php
+    use Carbon\Carbon;
+    $formattedDate = Carbon::parse($date)->format('F d, Y');
+    @endphp
     <table class="table">
-        <caption class="caption-top">User List</caption>
+        <caption class="caption-top">Attendance Status Table for Students on {{$formattedDate}}</caption>
         <thead>
             <tr>
                 <th scope="col">STT</th>

@@ -12,8 +12,10 @@
     <!-- header -->
     @include('admin.header')
     <!-- Nội dung trang Class Management -->
-    <h6>Change password</h6>
+    <h6>Profile > Change password</h6>
     @include('change_password')
+
+    @include('footer')
 </body>
 
 </html>

@@ -5,6 +5,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <!-- Bootstrap CSS -->
+      <link href="{{ asset('css/app.css') }}" rel="stylesheet">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
@@ -24,7 +25,7 @@
                       <div class="card-body">
                           <form action="{{ route('edit_profile_handle') }}" method="POST" enctype="multipart/form-data">
                               @csrf <!-- Sử dụng trong Laravel để chống CSRF attacks -->
-                                <input type="hidden" class="form-control" id="username" name="username" placeholder="Enter name" value="{{ isset($user->username) ? $user->username : '' }}" required>
+                              <input type="hidden" class="form-control" id="username" name="username" placeholder="Enter name" value="{{ isset($user->username) ? $user->username : '' }}" required>
                               <div class="mb-3">
                                   <label for="name" class="form-label">Name</label>
                                   <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{ isset($user->id) ? $user->name : '' }}" required>

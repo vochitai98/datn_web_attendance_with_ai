@@ -1,0 +1,29 @@
+body {
+    padding-left: 250px;
+    padding-right: 250px;
+    height: 100%;
+    position: relative;
+}
+
+.navbar-nav .nav-link {
+    font-size: 22px;
+    /* Đổi kích thước chữ tùy chỉnh tại đây */
+}
+
+.caption {
+    font-size: 1.5em;
+    /* Kích thước chữ */
+    font-weight: bold;
+    /* Độ đậm của chữ */
+    color: #333;
+    /* Màu chữ */
+    text-align: center;
+    /* Căn giữa văn bản */
+    padding: 10px 0;
+    /* Thêm padding trên và dưới */
+}
+
+.wrapper {
+    min-height: 100%;
+    position: relative;
+}

@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -13,6 +14,9 @@
     @include('teacher.header')
     <!-- Nội dung trang Class Management -->
     <h6>Home > User > attendance user</h6>
+    <div class="text-center">
+        <h5>My Class Name : {{$class->name}}</h5>
+    </div>
     <div class="row mb-6">
         <div class="col-md-2">
             <label for="dateSearch" class="form-label">Select Date</label>
@@ -29,9 +33,6 @@
         <div class="col-md-6 d-flex justify-content-end">
             <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
         </div>
-    </div>
-    <div class="text-center">
-        <h5>My Class Name : {{$class->name}}</h5>
     </div>
 
     <table class="table">
@@ -50,7 +51,7 @@
             foreach($attendance_users as $user) {
             if(!$user->status) {
             $absentCount++;
-                }
+            }
             }
             @endphp
             @foreach($attendance_users as $user)
