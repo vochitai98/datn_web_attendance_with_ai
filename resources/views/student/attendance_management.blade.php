@@ -14,25 +14,29 @@
 <body>
     <!-- header -->
     @include('student.header')
-    
+
     <h6>Home > Attendane management</h6>
     <br></br>
     <div class="text-center">
-        <h3>My Class : {{$student->className}}</h3>
+        <h5>My Class : {{$student->className}}</h5>
     </div>
     <br></br>
     <form id="filterForm" action="{{ route('student.attendance_management') }}" method="GET">
         <div class="row mb-6">
             <div class="col-md-2">
-                <label for="dateSearch" class="form-label">Select Date</label>
-                <input type="date" class="form-control" id="dateSearch" name="dateSearch" placeholder="Enter date" value="{{ isset($_GET['dateSearch']) ? $_GET['dateSearch'] : '' }}" style="height: 38px;">
+                <label for="dateSearch" class="form-label">Start Date</label>
+                <input type="date" class="form-control" name="startDate" id="startDate" placeholder="Enter date">
+            </div>
+            <div class="col-md-2">
+                <label for="dateSearch" class="form-label">End Date</label>
+                <input type="date" class="form-control" name="endDate" id="endDate" placeholder="Enter date">
             </div>
             <div class="col-md-2">
                 <label for="statusSearch" class="form-label">Select Status</label>
-                <select class="form-select form-select-sm" id="statusSearch" name="statusSearch" style="height: 38px;">
-                    <option value="" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "" ? 'selected' : '' }}>All</option>
-                    <option value="1" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "1" ? 'selected' : '' }}>Present</option>
-                    <option value="0" {{ isset($_GET['statusSearch']) && $_GET['statusSearch'] === "0" ? 'selected' : '' }}>Absent</option>
+                <select class="form-select form-select-sm" id="status" name="status" style="height: 38px;">
+                    <option value="">All</option>
+                    <option value="1">Present</option>
+                    <option value="0">Absent</option>
                 </select>
             </div>
             <div class="col-md-1 mt-auto d-flex justify-content-end">
@@ -76,7 +80,7 @@
                     @endif
                 </td>
                 <td class="text-center">
-                    <a href="{{ $record->image_url }}" target="_blank" >
+                    <a href="{{ $record->image_url }}" target="_blank">
                         <span class="bi bi-eye"></span>
                     </a>
                 </td>

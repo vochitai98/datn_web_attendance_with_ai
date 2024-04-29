@@ -12,8 +12,10 @@
     @include('teacher.header')
     <!-- Nội dung trang Class Management -->
     <h6>Profile > Edit</h6>
-    
+
     @include('edit_profile')
+
+    @include('footer')
 </body>
 
 </html>

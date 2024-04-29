@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -17,23 +18,33 @@
     <div class="text-center">
         <h5>My Class Name : {{$class->name}}</h5>
     </div>
-    <div class="row mb-6">
-        <div class="col-md-2">
-            <label for="dateSearch" class="form-label">Select Date</label>
-            <input type="date" class="form-control" id="dateSearch" placeholder="Enter date">
+    <br></br>
+    <form id="filterForm" method="GET">
+        <div class="row mb-6">
+            <input type="hidden" name="student_id" value="{{$student->id}}">
+            <input type="hidden" name="class_id" value="{{$class->id}}">
+            <div class="col-md-2">
+                <label for="dateSearch" class="form-label">Start Date</label>
+                <input type="date" class="form-control" name="startDate" id="startDate" placeholder="Enter date">
+            </div>
+            <div class="col-md-2">
+                <label for="dateSearch" class="form-label">End Date</label>
+                <input type="date" class="form-control" name="endDate" id="endDate" placeholder="Enter date">
+            </div>
+            <div class="col-md-2">
+                <label for="statusSearch" class="form-label">Select Status</label>
+                <select class="form-select form-select-sm" id="status" name="status" style="height: 38px;">
+                    <option value="">All</option>
+                    <option value="1">Present</option>
+                    <option value="0">Absent</option>
+                </select>
+            </div>
+            <div class="col-md-1 mt-auto d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
+            </div>
         </div>
-        <div class="col-md-2">
-            <label for="statusSearch" class="form-label">Select Status</label>
-            <select class="form-select form-select-sm" id="statusSearch">
-                <option selected>All</option>
-                <option value="1">Present</option>
-                <option value="0">Absent</option>
-            </select>
-        </div>
-        <div class="col-md-6 d-flex justify-content-end">
-            <button type="button" id="filterButton" class="btn btn-primary">Filter</button>
-        </div>
-    </div>
+
+    </form>
 
     <table class="table">
         <caption class="caption-top">Student name : {{$student->name}}</caption>
@@ -71,6 +82,7 @@
         </tbody>
     </table>
     <div>Số buổi vắng : {{$absentCount}} </div>
+    @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

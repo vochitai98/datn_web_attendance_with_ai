@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Teacher;
 use App\Models\Classes;
 use App\Models\Student;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,19 @@ class AdminController extends Controller
         $class_id = $request->input('class_id');
         $search = $request->input('search');
         if(isset($class_id)){
+            $base_url = 'http://localhost:8888/deleteClass';
+            // Initialize Guzzle HTTP Client
+            $client = new Client();
+            // Send POST request to Flask API with file and username
+            $response = $client->request('POST', $base_url, [
+                'multipart' => [
+                    [
+                        'name'     => 'classId',
+                        'contents' => $class_id
+                    ],
+                ]
+            ]);
+            dd($class_id);exit;
             Classes::where('id',$class_id)->delete();
         }
         $query = DB::table('classes');
@@ -160,7 +174,20 @@ class AdminController extends Controller
         $class->teacher_id = $validatedData['teacher_id'];
         // Thực hiện lưu vào cơ sở dữ liệu
         $class->save();
-        return response()->json(['message' => 'Teacher created successfully', 'data' => $class], 201);
+        $base_url = 'http://localhost:8888/addClass';
+        // Initialize Guzzle HTTP Client
+        $client = new Client();
+        // Send POST request to Flask API with file and username
+        $response = $client->request('POST', $base_url, [
+            'multipart' => [
+                [
+                    'name'     => 'classId',
+                    'contents' => $class->id
+                ],
+            ]
+        ]);
+
+        return response()->json(['message' => 'Class created successfully', 'data' => $class], 201);
     }
 
     public function teacherEditHandle(Request $request)

@@ -19,9 +19,15 @@ class TeacherController extends Controller
         return view('teacher.teacher_home');
     }
 
-    public function attendanceManagement()
+    public function attendanceManagement(Request $request)
     {
+        $image_id = $request->input('image_id');
+        if (isset($image_id)) {
+            Image::where('id', $image_id)->delete();
+        }
         $username = session('username');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
         $class = DB::table('classes')
         ->join('teachers', 'classes.teacher_id', '=', 'teachers.id')
         ->where('teachers.username', $username)
@@ -30,12 +36,21 @@ class TeacherController extends Controller
 
         //if exist class
         if ($class) {
-            $attendance_dates = DB::table('attendance_records')
+            $query = DB::table('attendance_records')
             ->join('students', 'attendance_records.student_id', '=', 'students.id')
+            ->join('images', 'attendance_records.image_id', '=', 'images.id')
             ->where('students.class_id', $class->id)
-            ->select('attendance_date')
-            ->distinct()
-            ->get();
+            ->select('images.id as image_id','images.image_url', 'attendance_records.attendance_date')
+            ->distinct();
+
+        if (isset($startDate)) {
+            $query->where('attendance_records.attendance_date', '>=', $startDate);
+        }
+        if(isset($endDate)){
+            $query->where('attendance_records.attendance_date','<=', $endDate);
+        }
+
+        $attendance_dates = $query->get();
         }else{
             return view('teacher.attendance_management');
         }
@@ -44,21 +59,18 @@ class TeacherController extends Controller
 
     public function processAttendance(Request $request)
     {
-
-        $name = $request->input('date');
-        $image = $request->input('image');
-        $className = '20TCLC DT5';
         try {
             // Validate the incoming request data
             $validatedData = $request->validate([
                 'date' => 'required|date',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif',
-
+                'classId' => 'required|exists:classes,id',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
             return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
         }
+        
         $base_url = 'http://localhost:8888/recognize';
         // Initialize Guzzle HTTP Client
         $client = new Client();
@@ -70,8 +82,8 @@ class TeacherController extends Controller
                     'contents' => fopen($validatedData['image']->path(), 'r'),
                 ],
                 [
-                    'name'     => 'className',
-                    'contents' => $className
+                    'name'     => 'classId',
+                    'contents' => $validatedData['classId']
                 ]
             ]
         ]);
@@ -116,31 +128,57 @@ class TeacherController extends Controller
         return view('teacher.attendance_management');
     }
 
-    public function attendanceUser(Request $request)
-    {
-        $student_id = $request->input('student_id');
-        $class_id = $request->input('class_id');
-        $attendance_users = DB::table('attendance_records')
-        ->where('student_id', $student_id)
-        ->select('attendance_records.*')
-        ->get();
-        $class = DB::table('classes')->find($class_id);
-        $student = DB::table('students')->find($student_id);
-        return view('teacher.attendance_user', compact('attendance_users', 'class', 'student'));
-    }
-
     public function attendanceUserList(Request $request)
     {
+        $search = $request->input('search');
+        $statusSearch = $request->input('statusSearch');
         $date = $request->input('attendance_date');
         $class_id = $request->input('class_id');
-        $attendance_records = DB::table('attendance_records')
+        $query = DB::table('attendance_records')
             ->join('students', 'students.id', '=', 'attendance_records.student_id')
             ->where('students.class_id', $class_id)
             ->where('attendance_records.attendance_date', $date)
-            ->select('students.id', 'students.name', 'students.identification', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date')
-            ->get();
+            ->select('students.id', 'students.name', 'students.identification', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date');
+        if(isset($statusSearch)){
+            $query->where('attendance_records.status',$statusSearch);
+        }
+        if (isset($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('students.name', 'like', '%' . $search . '%')
+                ->orWhere('students.identification', 'like', '%' . $search . '%')
+                ->orWhere('students.phone', 'like', '%' . $search . '%')
+                ->orWhere('students.address', 'like', '%' . $search . '%')
+                ->orWhere('students.email', 'like', '%' . $search . '%');
+            });
+        }
+        $attendance_records = $query->get();
         $class = DB::table('classes')->find($class_id);
         return view('teacher.attendance_user_list', compact('attendance_records','class','date'));
+    }
+
+    public function attendanceUser(Request $request)
+    {
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $status = $request->input('status');
+        $student_id = $request->input('student_id');
+        $class_id = $request->input('class_id');
+        $query = DB::table('attendance_records')
+        ->where('student_id', $student_id)
+            ->select('attendance_records.*');
+        if (isset($startDate)) {
+            $query->where('attendance_date', '>=', $startDate);
+        }
+        if (isset($endDate)) {
+            $query->where('attendance_date', '<=', $endDate);
+        }
+        if (isset($status)) {
+            $query->where('status', $status);
+        }
+        $attendance_users = $query->get();
+        $class = DB::table('classes')->find($class_id);
+        $student = DB::table('students')->find($student_id);
+        return view('teacher.attendance_user', compact('attendance_users', 'class', 'student'));
     }
 
     public function changePassword()

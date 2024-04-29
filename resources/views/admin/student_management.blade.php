@@ -27,14 +27,33 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <!-- <div class="col-md-2">
         <select class="form-select" id="class_id" name="class_id" onchange="getClassData()">
             <option value="" selected disabled>Select Class</option>
             @foreach($classes as $class)
-            <option value="{{ $class->id }}">{{ $class->name }}</option>
+
             @endforeach
         </select>
-    </div>
+    </div> -->
+
+    <form id="filterForm" method="GET">
+        <div class="row mb-6">
+            <div class="col-md-2">
+                <label for="search-select" class="form-label">Select Class</label>
+                <select class="form-select" id="class_id" name="class_id">
+                    <option value="" selected disabled>All</option>
+                    @foreach($classes as $class)
+                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-1 mt-auto d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
+            </div>
+        </div>
+
+    </form>
+
     <table class="table">
         <caption class="caption-top">List of Students</caption>
         <thead>

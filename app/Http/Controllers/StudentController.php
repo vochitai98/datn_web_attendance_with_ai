@@ -21,8 +21,9 @@ class StudentController extends Controller
     public function attendanceManagement(Request $request)
     {
         $username = session('username');
-        $dateSearch = $request->input('dateSearch');
-        $statusSearch = $request->input('statusSearch');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $status = $request->input('status');
 
         $student = DB::table('students')
             ->join('classes', 'students.class_id', '=', 'classes.id')
@@ -39,12 +40,14 @@ class StudentController extends Controller
             ->select('attendance_records.*','images.image_url')
             ->where('student_id', $student->id);
         
-        if (isset($dateSearch)) {
-            $query->where('attendance_date', $dateSearch);
+        if (isset($startDate)) {
+            $query->where('attendance_date','>=', $startDate);
         }
-
-        if (isset($statusSearch)) {
-            $query->where('status', $statusSearch);
+        if (isset($endDate)) {
+            $query->where('attendance_date', '<=', $endDate);
+        }
+        if (isset($status)) {
+            $query->where('status', $status);
         }
 
         $attendance_records = $query->get();
@@ -116,6 +119,10 @@ class StudentController extends Controller
                 [
                     'name'     => 'username',
                     'contents' => $username
+                ],
+                [
+                    'name'     => 'classId',
+                    'contents' => $validatedData['class_id']
                 ]
             ]
         ]);

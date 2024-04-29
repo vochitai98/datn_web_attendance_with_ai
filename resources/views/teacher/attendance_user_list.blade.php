@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -15,16 +16,40 @@
     <!-- Nội dung trang Class Management -->
     <h6>Home > Attendane management > detail</h6>
     <div class="text-center">
-        <h5>My Class Name : {{$class->name}}</h5>
+        <h5>My Class : {{$class->name}}</h5>
     </div>
-    <div class="col-md-2">
-        <label for="statusSearch" class="form-label">Select Status</label>
-        <select class="form-select form-select-sm" id="statusSearch">
-            <option selected>All</option>
-            <option value="1">Present</option>
-            <option value="0">Absent</option>
-        </select>
+    <br></br>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-sm-4">
+                <form class="d-flex align-items-center" method="GET">
+                    <input type="hidden" name="attendance_date" value="{{$date}}">
+                    <input type="hidden" name="class_id" value="{{$class->id}}">
+                    <input class="form-control me-2" type="search" name="search" value="{{isset($search) ? $search : ''}}" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
     </div>
+
+
+    <form id="filterForm" method="GET">
+        <input type="hidden" name="attendance_date" value="{{$date}}">
+        <input type="hidden" name="class_id" value="{{$class->id}}">
+        <div class="row mb-6">
+            <div class="col-md-2">
+                <label for="statusSearch" class="form-label">Select Status</label>
+                <select class="form-select form-select-sm" name="statusSearch" id="statusSearch">
+                    <option value="" selected>All</option>
+                    <option value="1">Present</option>
+                    <option value="0">Absent</option>
+                </select>
+            </div>
+            <div class="col-md-1 mt-auto d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
+            </div>
+        </div>
+    </form>
     @php
     use Carbon\Carbon;
     $formattedDate = Carbon::parse($date)->format('F d, Y');
@@ -41,7 +66,7 @@
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Status</th>
 
-                <th scope="col" class="text-center">Action</th>
+                <th scope="col" class="text-center">View Detail Attendance Records</th>
             </tr>
         </thead>
         <tbody>
@@ -64,12 +89,16 @@
                     @endif
                 </td>
                 <td class="text-center">
-                    <a href="{{ route('teacher.attendance_user',['student_id' => $record->id, 'class_id' => $class->id]) }}" class=" btn btn-primary">View</a>
+                    <a href="{{ route('teacher.attendance_user',['student_id' => $record->id, 'class_id' => $class->id]) }}">
+                        <span class="bi bi-eye"></span>
+                    </a>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
+
+    @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
