@@ -13,91 +13,110 @@
 <body>
     <!-- header -->
     @include('teacher.header')
-    <!-- Nội dung trang Class Management -->
-    <h6>Home > Attendane management > detail</h6>
-    <div class="text-center">
-        <h5>My Class : {{$class->name}}</h5>
-    </div>
-    <br></br>
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-sm-4">
-                <form class="d-flex align-items-center" method="GET">
-                    <input type="hidden" name="attendance_date" value="{{$date}}">
-                    <input type="hidden" name="class_id" value="{{$class->id}}">
-                    <input class="form-control me-2" type="search" name="search" value="{{isset($search) ? $search : ''}}" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+    <div class="main-content">
+        <!-- Nội dung trang Class Management -->
+        <h6>Home > Attendane management > detail</h6>
+        <div class="text-center">
+            <h5>My Class : {{$class->name}}</h5>
+        </div>
+        <br></br>
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-sm-4">
+                    <form class="d-flex align-items-center" method="GET">
+                        <input type="hidden" name="attendance_date" value="{{$date}}">
+                        <input type="hidden" name="class_id" value="{{$class->id}}">
+                        <input class="form-control me-2" type="search" name="search" value="{{isset($search) ? $search : ''}}" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <form id="filterForm" method="GET">
-        <input type="hidden" name="attendance_date" value="{{$date}}">
-        <input type="hidden" name="class_id" value="{{$class->id}}">
-        <div class="row mb-6">
-            <div class="col-md-2">
-                <label for="statusSearch" class="form-label">Select Status</label>
-                <select class="form-select form-select-sm" name="statusSearch" id="statusSearch">
-                    <option value="" selected>All</option>
-                    <option value="1">Present</option>
-                    <option value="0">Absent</option>
-                </select>
+        <form id="filterForm" method="GET">
+            <input type="hidden" name="attendance_date" value="{{$date}}">
+            <input type="hidden" name="class_id" value="{{$class->id}}">
+            <div class="row mb-6">
+                <div class="col-md-2">
+                    <label for="statusSearch" class="form-label">Select Status</label>
+                    <select class="form-select form-select-sm" name="statusSearch" id="statusSearch">
+                        <option value="" selected>All</option>
+                        <option value="1">Present</option>
+                        <option value="0">Absent</option>
+                    </select>
+                </div>
+                <div class="col-md-1 mt-auto d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
+                </div>
             </div>
-            <div class="col-md-1 mt-auto d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
-            </div>
-        </div>
-    </form>
-    @php
-    use Carbon\Carbon;
-    $formattedDate = Carbon::parse($date)->format('F d, Y');
-    @endphp
-    <table class="table">
-        <caption class="caption-top">Attendance Status Table for Students on {{$formattedDate}}</caption>
-        <thead>
-            <tr>
-                <th scope="col">STT</th>
-                <th scope="col" class="text-center">Name</th>
-                <th scope="col" class="text-center">MSSV</th>
-                <th scope="col" class="text-center">Phone</th>
-                <th scope="col" class="text-center">Address</th>
-                <th scope="col" class="text-center">Email</th>
-                <th scope="col" class="text-center">Status</th>
+        </form>
+        @php
+        use Carbon\Carbon;
+        $formattedDate = Carbon::parse($date)->format('F d, Y');
+        @endphp
+        <table class="table">
+            <caption class="caption-top">Attendance Status Table for Students on {{$formattedDate}}</caption>
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col" class="text-center">Name</th>
+                    <th scope="col" class="text-center">MSSV</th>
+                    <th scope="col" class="text-center">Phone</th>
+                    <th scope="col" class="text-center">Address</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Status</th>
 
-                <th scope="col" class="text-center">View Detail Attendance Records</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-            $stt = 0;
-            @endphp
-            @foreach($attendance_records as $record)
-            <tr>
-                <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $record->name }}</td>
-                <td class="text-center">{{ $record->identification }}</td>
-                <td class="text-center">{{ $record->phone }}</td>
-                <td class="text-center">{{ $record->address }}</td>
-                <td class="text-center">{{ $record->email }}</td>
-                <td class="text-center">
-                    @if($record->status)
-                    <span class="badge bg-success">v</span> <!-- Label tích v (đã điểm danh) -->
-                    @else
-                    <span class="badge bg-danger">x</span> <!-- Label tích x (chưa điểm danh) -->
+                    <th scope="col" class="text-center">View Detail Attendance Records</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $perPage = 8;
+                $totalRecords = count($attendance_records);
+                $totalPages = ceil($totalRecords / $perPage);
+                $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $start = ($current_page - 1) * $perPage;
+                $end = $start + $perPage - 1;
+                @endphp
+
+                @for($i = $start; $i <= $end; $i++) @if(isset($attendance_records[$i])) <tr>
+                    <th scope="row">{{ $i + 1 }}</th>
+                    <td class="text-center">{{ $attendance_records[$i]->name }}</td>
+                    <td class="text-center">{{ $attendance_records[$i]->identification }}</td>
+                    <td class="text-center">{{ $attendance_records[$i]->phone }}</td>
+                    <td class="text-center">{{ $attendance_records[$i]->address }}</td>
+                    <td class="text-center">{{ $attendance_records[$i]->email }}</td>
+                    <td class="text-center">
+                        @if($attendance_records[$i]->status)
+                        <span class="badge bg-success">v</span> <!-- Label tích v (đã điểm danh) -->
+                        @else
+                        <span class="badge bg-danger">x</span> <!-- Label tích x (chưa điểm danh) -->
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ route('teacher.attendance_user',['student_id' => $attendance_records[$i]->id, 'class_id' => $class->id]) }}">
+                            <span class="bi bi-eye"></span>
+                        </a>
+                    </td>
+                    </tr>
                     @endif
-                </td>
-                <td class="text-center">
-                    <a href="{{ route('teacher.attendance_user',['student_id' => $record->id, 'class_id' => $class->id]) }}">
-                        <span class="bi bi-eye"></span>
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    @endfor
+            </tbody>
+        </table>
+        <!-- Pagination -->
+        <div class="pagination">
+            @if($current_page > 1)
+            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            @endif
 
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+                @endfor
+
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                    @endif
+        </div>
+    </div>
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

@@ -1,9 +1,13 @@
 <style>
     .footer {
-        position: fixed;
+        /* position: fixed; */
+        padding-top: 25px;
+        padding-bottom: 25px;
+
         left: 0;
         bottom: 0;
         width: 100%;
+        background-color: dimgray;
     }
 </style>
 

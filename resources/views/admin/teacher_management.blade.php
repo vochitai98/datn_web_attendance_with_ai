@@ -14,70 +14,87 @@
 <body>
     <!-- header -->
     @include('admin.header')
-    <!-- Nội dung trang Class Management -->
-    <h6>Home > Teacher management</h6>
+    <div class="main-content">
+        <!-- Nội dung trang Class Management -->
+        <h6>Home > Teacher management</h6>
 
-    <div class="container">
-        <div class="row justify-content-between align-items-center">
-            <div class="col-sm-4 text-center" style="margin-left: 30%;">
-                <form class="d-flex align-items-center" method="GET">
-                    <input class="form-control me-2" type="search" name = "search" value="{{isset($search) ? $search : ''}}" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-            <div class="col-sm-4 text-end">
-                <a href="{{ route('admin.teacher_edit') }}">
-                    <span class="bi bi-person-plus" style="font-size: 2.0em;"></span>
-                </a>
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-sm-4 text-center" style="margin-left: 30%;">
+                    <form class="d-flex align-items-center" method="GET">
+                        <input class="form-control me-2" type="search" name="search" value="{{isset($search) ? $search : ''}}" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+                <div class="col-sm-4 text-end">
+                    <a href="{{ route('admin.teacher_edit') }}">
+                        <span class="bi bi-person-plus" style="font-size: 2.0em;"></span>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <table class=" table">
-        <caption class="caption-top">List of Teachers</caption>
-        <thead>
-            <tr>
-                <th scope="col">STT</th>
-                <th scope="col" class="text-center">Name</th>
-                <th scope="col" class="text-center">Teacher ID</th>
-                <th scope="col" class="text-center">Class</th>
-                <th scope="col" class="text-center">Phone</th>
-                <th scope="col" class="text-center">Address</th>
-                <th scope="col" class="text-center">Email</th>
-                <th scope="col" class="text-center">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-            $stt = 0;
-            @endphp
-            @foreach($teachers as $record)
-            <tr>
-                <th scope="row">{{ ++$stt }}</th>
-                <td class="text-center">{{ $record->name }}</td>
-                <td class="text-center">{{ $record->identification }}</td>
-                <td class="text-center">
-                    @if($record->className)
-                    {{ $record->className }}
-                    @else
-                    Not yet in charge
+        <table class=" table">
+            <caption class="caption-top">List of Teachers</caption>
+            <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col" class="text-center">Name</th>
+                    <th scope="col" class="text-center">Teacher ID</th>
+                    <th scope="col" class="text-center">Class</th>
+                    <th scope="col" class="text-center">Phone</th>
+                    <th scope="col" class="text-center">Address</th>
+                    <th scope="col" class="text-center">Email</th>
+                    <th scope="col" class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $perPage = 8;
+                $totalRecords = count($teachers);
+                $totalPages = ceil($totalRecords / $perPage);
+                $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $start = ($current_page - 1) * $perPage;
+                $end = $start + $perPage - 1;
+                @endphp
+                @for($i = $start; $i <= $end; $i++) @if(isset($teachers[$i])) <tr>
+                    <th scope="row">{{ $i + 1 }}</th>
+                    <td class="text-center">{{ $teachers[$i]->name }}</td>
+                    <td class="text-center">{{ $teachers[$i]->identification }}</td>
+                    <td class="text-center">
+                        @if($teachers[$i]->className)
+                        {{ $teachers[$i]->className }}
+                        @else
+                        Not yet in charge
+                        @endif
+                    </td>
+                    <td class="text-center">{{ $teachers[$i]->phone }}</td>
+                    <td class="text-center">{{ $teachers[$i]->address }}</td>
+                    <td class="text-center">{{ $teachers[$i]->email }}</td>
+                    <td class="text-center">
+                        <a href="{{ route('admin.teacher_edit',['teacher_id' => $teachers[$i]->id]) }}"><span class="bi bi-eye" style="margin-right:10px;"></span>
+                        </a>
+                        <a href="{{ route('admin.teacher_management',['teacher_id' => $teachers[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash"></span>
+                        </a>
+                    </td>
+                    </tr>
                     @endif
-                </td>
-                <td class="text-center">{{ $record->phone }}</td>
-                <td class="text-center">{{ $record->address }}</td>
-                <td class="text-center">{{ $record->email }}</td>
-                <td class="text-center">
-                    <a href="{{ route('admin.teacher_edit',['teacher_id' => $record->id]) }}"><span class="bi bi-eye" style="margin-right:10px;"></span>
-                    </a>
-                    <a href="{{ route('admin.teacher_management',['teacher_id' => $record->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash"></span>
-                    </a>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                    @endfor
+            </tbody>
+        </table>
+        <div class="pagination">
+            @if($current_page > 1)
+            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            @endif
 
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+                @endfor
+
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                    @endif
+        </div>
+    </div>
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

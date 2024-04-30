@@ -57,6 +57,16 @@ class TeacherController extends Controller
         return view('teacher.attendance_management',compact('class', 'attendance_dates'));
     }
 
+    public function takeAttendance(Request $request){
+        $username = session('username');
+        $class = DB::table('classes')
+            ->join('teachers', 'classes.teacher_id', '=', 'teachers.id')
+            ->where('teachers.username', $username)
+            ->select('classes.*')
+            ->first();
+        return view('teacher.take_attendance',compact('class'));
+    }
+
     public function processAttendance(Request $request)
     {
         try {

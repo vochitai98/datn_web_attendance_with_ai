@@ -61,6 +61,7 @@ Route::get('/attendance_management', [TeacherController::class, 'attendanceManag
 Route::get('/attendance_management/attendance_user', [TeacherController::class, 'attendanceUser'])->name('teacher.attendance_user');
 Route::get('/attendance_management/attendance_user/detail', [TeacherController::class, 'attendanceUserList'])->name('teacher.attendance_user_list');
 Route::post('/process_attendance', [TeacherController::class, 'processAttendance'])->name('teacher.process_attendance');
+Route::get('/take_attendance', [TeacherController::class, 'takeAttendance'])->name('teacher.take_attendance');
 Route::get('/teacher_change_password', [TeacherController::class, 'changePassword'])->name('teacher.change_password');
 Route::get('/teacher_edit_profile', [TeacherController::class, 'editProfile'])->name('teacher.edit_profile');
 

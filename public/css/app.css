@@ -27,3 +27,29 @@ body {
     min-height: 100%;
     position: relative;
 }
+.main-content {
+    min-height:80vh ;
+    background-color:#f8f8f8;
+
+}
+
+.pagination-link {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    /* Loại bỏ dấu gạch dưới */
+    color: #333;
+    /* Đổi màu văn bản */
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+.pagination-link.active {
+    background-color: #007bff;
+    color: #fff;
+    /* Đổi màu văn bản */
+}
+

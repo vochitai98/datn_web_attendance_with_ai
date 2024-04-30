@@ -2,8 +2,9 @@
     .dropdown-menu {
         font-size: 20px;
     }
-     .navbar {
-        padding-bottom: 25px;
+
+    .navbar {
+        background-color: #473C8B !important;
     }
 </style>
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
