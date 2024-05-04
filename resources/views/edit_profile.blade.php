@@ -3,6 +3,11 @@
           {{ session('message') }}
       </div>
       @endif
+      @if (session('errors'))
+      <div class="alert alert-danger">
+          {{ session('errors') }}
+      </div>
+      @endif
       <div class="container mt-5">
           <div class="row justify-content-center">
               <div class="col-md-6">
@@ -45,7 +50,7 @@
                               </div>
                               @endif
                               <button type="submit" class="btn btn-primary me-2">Update</button>
-                              <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
+                              <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                           </form>
                       </div>
 

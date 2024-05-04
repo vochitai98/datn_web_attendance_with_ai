@@ -99,7 +99,7 @@
                             <span class="bi bi-eye"></span>
                         </a>
                         <a href="{{ route('teacher.attendance_management',['image_id' => $attendance_dates[$i]->image_id]) }}" onclick="return confirm('Are you sure you want to delete?')">
-                            <span class="bi bi-trash"></span>
+                            <span class="bi bi-trash text-danger"></span>
                         </a>
                     </td>
                     </tr>

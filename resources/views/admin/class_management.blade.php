@@ -17,7 +17,16 @@
     <!-- Nội dung trang Class Management -->
     <div class="main-content">
         <h6>Home > Class management</h6>
-
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
+        @endif
         <div class="container">
             <div class="row justify-content-between align-items-center">
                 <div class="col-sm-4 text-center" style="margin-left: 30%;">
@@ -57,7 +66,7 @@
                     <td class="text-center">
                         <a href="{{ route('admin.class_edit',['class_id' => $classes[$i]->id]) }}"><span class="bi bi-eye" style="margin-right:10px;"></span>
                         </a>
-                        <a href="{{ route('admin.class_management',['class_id' => $classes[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash"></span>
+                        <a href="{{ route('admin.class_management',['class_id' => $classes[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash text-danger"></span>
                         </a>
                     </td>
                     </tr>

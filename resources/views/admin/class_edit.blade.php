@@ -17,6 +17,16 @@
         @else
         <h6>Home > Class management > Add</h6>
         @endif
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
+        @endif
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
@@ -34,6 +44,9 @@
                         <div class="card-body">
                             <form action="{{ route('admin.class_add_handle') }}" method="POST">
                                 @csrf <!-- Sử dụng trong Laravel để chống CSRF attacks -->
+                                @if(isset($class->id))
+                                <input type="hidden" class="form-control" id="class_id" name="class_id" placeholder="Enter class name" value="{{$class->id}}" required>
+                                @endif
                                 <div class="mb-3">
                                     <label for="className" class="form-label">Class Name</label>
                                     <input type="text" class="form-control" id="className" name="className" placeholder="Enter class name" value="{{ isset($class->id) ? $class->name : '' }}" required>
@@ -53,7 +66,7 @@
                                 <button type="submit" class="btn btn-primary me-2">Add</button>
                                 @endif
 
-                                <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                             </form>
 
                         </div>
@@ -63,7 +76,7 @@
         </div>
     </div>
     @include('footer')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

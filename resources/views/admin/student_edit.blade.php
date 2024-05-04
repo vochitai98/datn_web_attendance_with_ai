@@ -14,11 +14,20 @@
     @include('admin.header')
     <div class="main-content">
         @if(isset($student->id))
-        <h6>Home > Student management > View</h6>
+        <h6>Home > Student management > Update</h6>
         @else
         <h6>Home > Student management > Add</h6>
         @endif
-
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
+        @endif
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
@@ -36,6 +45,7 @@
                         <div class="card-body">
                             <form action="{{ route('admin.student_edit_handle') }}" method="POST" enctype="multipart/form-data">
                                 @csrf <!-- Sử dụng trong Laravel để chống CSRF attacks -->
+                                <input type="hidden" class="form-control" id="id" name="id" value="{{ isset($student->id) ? $student->id : '' }}" required>
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="{{ isset($student->id) ? $student->name : '' }}" required>
@@ -76,8 +86,8 @@
                                 @else
                                 <button type="submit" class="btn btn-primary me-2">Add</button>
                                 @endif
-                                <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
-                                <button type="button" class="btn btn-primary" onclick="window.location.href='cancel-page-url' " style="float: right;">
+                                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route("reset_password", ['username' => $student->username, 'email' => $student->email]) }}' " style="float: right;">
                                     <i class=" fas fa-key"></i> Reset Password
                                 </button>
                             </form>

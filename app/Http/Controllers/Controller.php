@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class Controller extends BaseController
             if (!Hash::check($password, $student->password)) {
                 return redirect()->route('login')->with('error', 'Student Password is not corect!');
             }
-            session(['username' => $username]);
+            session(['username' => $username, 'avt' => $student->avt]);
             return redirect()->route('student_home');
         }
         $teacher = Teacher::where('username', $username)->first();
@@ -56,11 +57,11 @@ class Controller extends BaseController
                 return redirect()->route('login')->with('error', 'Teacher Password is not corect!');
             }
             // Nếu tồn tại trong bảng teacher, đây là một teacher
-            session(['username' => $username]);
+            session(['username' => $username, 'avt' => $teacher->avt]);
             return redirect()->route('teacher_home');
         }
         // Nếu không tìm thấy trong bất kỳ bảng nào, chuyển hướng về trang đăng nhập với thông báo lỗi
-        return redirect()->route('login')->with('error', 'Tên người dùng không tồn tại.');
+        return redirect()->route('login')->with('error', 'Username is not exists');
     }
 
     public function checkValidatedRegister(Request $request)
@@ -142,7 +143,7 @@ class Controller extends BaseController
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
 
         if (isset($username)) {
@@ -175,8 +176,29 @@ class Controller extends BaseController
                 $user->avt = $imageUrl;
             }
             $user->save();
-            return redirect()->back()->with('message', 'Cập nhật thành công!');
+            return redirect()->back()->with('message', 'updated successfully!');
         }
-        return response()->json(['message' => 'Username is not exists'], 400);
+        return redirect()->back()->with(['errors' => 'Username is not exists']);
+    }
+    public function resetPassword(Request $request){
+        $username = $request->input('username');
+        $email = $request->input('email');
+        $studentExists = Student::where('username', $username)->exists();
+        $teacherExists = Teacher::where('username', $username)->exists();
+        if ($studentExists) {
+            $user = Student::where('username', $username)->first();
+        } else if ($teacherExists) {
+            $user = Teacher::where('username', $username)->first();
+        } else {
+            return redirect()->back()->with(['errors' => 'Username is not exists']);
+        }
+        $newPassword = '123456';
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        Mail::send('email_newpassword', ['password' => $newPassword], function ($message) use ($email) {
+            $message->to($email)->subject('Your New Password');
+        });
+        return redirect()->back()->with(['message' => 'New password sent successfully']);
     }
 }

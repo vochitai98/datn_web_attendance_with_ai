@@ -24,20 +24,32 @@ class AdminController extends Controller
         $class_id = $request->input('class_id');
         $search = $request->input('search');
         if(isset($class_id)){
-            $base_url = 'http://localhost:8888/deleteClass';
-            // Initialize Guzzle HTTP Client
-            $client = new Client();
-            // Send POST request to Flask API with file and username
-            $response = $client->request('POST', $base_url, [
-                'multipart' => [
-                    [
-                        'name'     => 'classId',
-                        'contents' => $class_id
-                    ],
-                ]
-            ]);
-            dd($class_id);exit;
-            Classes::where('id',$class_id)->delete();
+            try {
+                $base_url = 'http://localhost:8888/deleteClass';
+                // Initialize Guzzle HTTP Client
+                $client = new Client();
+                // Send POST request to Flask API with file and username
+                $response = $client->request('POST', $base_url, [
+                    'multipart' => [
+                        [
+                            'name'     => 'classId',
+                            'contents' => $class_id
+                        ],
+                    ]
+                ]);
+                // Check response status code to ensure success
+                if ($response->getStatusCode() == 200) {
+                    Classes::where('id', $class_id)->delete();
+                    return redirect()->back()->with(['message' => 'Delete class successful.']);
+                } else {
+                    // Return error message if response status code is not 200
+                    return redirect()->back()->with(['errors' => 'Delete class failed.'], $response->getStatusCode());
+                }
+            } catch (\Exception $e) {
+                // Handle exception and return error message
+                return redirect()->back()->with(['errors' => $e->getMessage()]);
+            }
+            
         }
         $query = DB::table('classes');
         if(isset($search)){
@@ -155,8 +167,27 @@ class AdminController extends Controller
         return view('admin.class_edit', compact('teachers'));
     }
 
-    public function classAdd(Request $request)
+    public function classEditHandle(Request $request)
     {
+        $class_id = $request->input('class_id');
+        if($class_id){
+            try {
+                // Validate the incoming request data
+                $validatedData = $request->validate([
+                    'className' => 'required|string|max:255',
+                    'teacher_id' => 'required|string|max:255|exists:teachers,id',
+                    // Add validation rules for other fields
+                ]);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                // Handle validation errors
+                return redirect()->back()->with(['errors' => $e->validator->errors()]);
+            }
+            $class = Classes::findOrFail($class_id);
+            $class->name = $validatedData['className'];
+            $class->teacher_id = $validatedData['teacher_id'];
+            $class->save();
+            return redirect()->back()->with('message', 'Class updated successfully!');
+        }
         try {
             // Validate the incoming request data
             $validatedData = $request->validate([
@@ -166,7 +197,7 @@ class AdminController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
         // Create a new resource instance
         $class = new Classes();
@@ -174,88 +205,113 @@ class AdminController extends Controller
         $class->teacher_id = $validatedData['teacher_id'];
         // Thực hiện lưu vào cơ sở dữ liệu
         $class->save();
-        $base_url = 'http://localhost:8888/addClass';
-        // Initialize Guzzle HTTP Client
-        $client = new Client();
-        // Send POST request to Flask API with file and username
-        $response = $client->request('POST', $base_url, [
-            'multipart' => [
-                [
-                    'name'     => 'classId',
-                    'contents' => $class->id
-                ],
-            ]
-        ]);
-
-        return response()->json(['message' => 'Class created successfully', 'data' => $class], 201);
+        try {
+            $base_url = 'http://localhost:8888/addClass';
+            // Initialize Guzzle HTTP Client
+            $client = new Client();
+            // Send POST request to Flask API with file and username
+            $response = $client->request('POST', $base_url, [
+                'multipart' => [
+                    [
+                        'name'     => 'classId',
+                        'contents' => $class->id
+                    ],
+                ]
+            ]);
+            // Check response status code to ensure success
+        } catch (\Exception $e) {
+            $class->delete();
+            return redirect()->back()->with(['errors' => $e->getMessage()]);
+        }
+        return redirect()->back()->with('message', 'Class created successfully!');
     }
 
     public function teacherEditHandle(Request $request)
     {
-        try {
-            // Validate the incoming request data
-            $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:teachers,username|unique:students,username|unique:admin,username',
-                'email' => 'required|email|unique:teachers,email',
-                'phone' => 'nullable|string|max:15|unique:teachers,phone',
-                'password' => 'required|string|min:6|max:255',
-                'address' => 'nullable|string|max:255',
-                'identification' => 'nullable|string',
-                'dayofbirth' => 'nullable|date',
-                // Add validation rules for other fields
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+        $username = $request->input('username');
+        $id = $request->input('id');
+        if(!isset($username)){
+            $user = Teacher::where('id', $id)->first();
+            try {
+                // Validate the incoming request data
+                $validatedData = $request->validate([
+                    'name' => 'required|string|max:255',
+                    'email' => 'nullable|email|max:255|unique:teachers,email,' . $id . '|unique:students,email,' . $id,
+                    'phone' => 'nullable|string|max:15|unique:teachers,phone,' . $id . '|unique:students,phone,' . $id,
+                    'address' => 'nullable|string|max:255',
+                    'identification' => 'nullable|string',
+                    'dayofbirth' => 'nullable|date',
+                    // Add validation rules for other fields
+                ]);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                // Handle validation errors
+                return redirect()->back()->with(['errors' => $e->validator->errors()]);
+            }
+        }else{
+            try {
+                // Validate the incoming request data
+                $validatedData = $request->validate([
+                    'name' => 'required|string|max:255',
+                    'username' => 'required|string|max:255|unique:teachers,username|unique:students,username|unique:admin,username',
+                    'email' => 'nullable|email|max:255|unique:teachers,email|unique:students,email',
+                    'phone' => 'nullable|string|max:15|unique:teachers,phone|unique:students,phone',
+                    'password' => 'required|string|min:6|max:255',
+                    'address' => 'nullable|string|max:255',
+                    'identification' => 'nullable|string',
+                    'dayofbirth' => 'nullable|date',
+                    // Add validation rules for other fields
+                ]);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                // Handle validation errors
+                return redirect()->back()->with(['errors' => $e->validator->errors()]);
+            }
+            $user = new Teacher();
+            $user->username = $validatedData['username'];
+            $user->password = Hash::make($validatedData['password']);
         }
-        // Create a new resource instance
-        $user = new Teacher();
+        
         $user->name = $validatedData['name'];
-        $user->username = $validatedData['username'];
-        $user->password = Hash::make($validatedData['password']);
         $user->phone = $validatedData['phone'];
         $user->email = $validatedData['email'];
         $user->dayofbirth = $validatedData['dayofbirth'];
         $user->address = $validatedData['address'];
         $user->identification = $validatedData['identification'];
-        // Thực hiện lưu vào cơ sở dữ liệu
         $user->save();
-        return response()->json(['message' => 'Teacher created successfully', 'data' => $user], 201);
+        if(isset($username)){
+            return redirect()->back()->with('message', 'Teacher created successfully!');
+        }
+        return redirect()->back()->with('message', 'Teacher updated successfully!');
     }
 
     public function studentEditHandle(Request $request)
     {
+        $id = $request->input('id');
         try {
             // Validate the incoming request data
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:teachers,username|unique:students,username|unique:admin,username',
-                'email' => 'required|email|unique:teachers,email',
-                'phone' => 'required|string|max:15|unique:teachers,phone',
-                'password' => 'required|string|min:6|max:255',
+                'email' => 'nullable|email|max:255|unique:teachers,email,' . $id . '|unique:students,email,' . $id,
+                'phone' => 'nullable|string|max:15|unique:teachers,phone,' . $id . '|unique:students,phone,' . $id,
                 'address' => 'nullable|string|max:255',
                 'identification' => 'nullable|string',
+                'class_id' => 'required|exists:classes,id',
                 'dayofbirth' => 'nullable|date',
                 // Add validation rules for other fields
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
-        // Create a new resource instance
-        $user = new Teacher();
+        $user = Student::where('id', $id)->first();
         $user->name = $validatedData['name'];
-        $user->username = $validatedData['username'];
-        $user->password = Hash::make($validatedData['password']);
         $user->phone = $validatedData['phone'];
         $user->email = $validatedData['email'];
         $user->dayofbirth = $validatedData['dayofbirth'];
         $user->address = $validatedData['address'];
         $user->identification = $validatedData['identification'];
-        // Thực hiện lưu vào cơ sở dữ liệu
+        $user->class_id = $validatedData['class_id'];
         $user->save();
-        return response()->json(['message' => 'Student updated successfully', 'data' => $user], 201);
+        return redirect()->back()->with('message', 'Student updated successfully!');
     }
 
     public function changePassword()

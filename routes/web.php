@@ -26,6 +26,7 @@ Route::get('/login', [Controller::class, 'login'])->name('login');
 Route::post('/login_handle', [Controller::class, 'loginHandle'])->name('login_handle');
 Route::post('/change_password_handle', [Controller::class, 'changePasswordHandle'])->name('change_password_handle');
 Route::post('/edit_profile_handle', [Controller::class, 'editProfileHandle'])->name('edit_profile_handle');
+Route::get('/reset_password', [Controller::class, 'resetPassword'])->name('reset_password');
 
 
 Route::get('/home', [Controller::class, 'home'])->name('home');
@@ -41,7 +42,7 @@ Route::get('/student_management/student_edit', [AdminController::class, 'student
 Route::post('/student_management/student_edit_handle', [AdminController::class, 'studentEditHandle'])->name('admin.student_edit_handle');
 Route::post('/teacher_management/teacher_edit_handle', [AdminController::class, 'teacherEditHandle'])->name('admin.teacher_edit_handle');
 
-Route::post('/class_management/class_add_handle', [AdminController::class, 'classAdd'])->name('admin.class_add_handle');
+Route::post('/class_management/class_add_handle', [AdminController::class, 'classEditHandle'])->name('admin.class_add_handle');
 Route::get('/admin_change_password', [AdminController::class, 'changePassword'])->name('admin.change_password');
 Route::get('/admin_edit_profile', [AdminController::class, 'editProfile'])->name('admin.edit_profile');
 

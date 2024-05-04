@@ -7,7 +7,9 @@
         left: 0;
         bottom: 0;
         width: 100%;
-        background-color: dimgray;
+        background-color: #34495E;
+        color: #FFFFFF;
+        font-family: Arial, Helvetica, sans-serif;
     }
 </style>
 

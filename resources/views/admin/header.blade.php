@@ -4,14 +4,31 @@
     }
 
     .navbar {
-        background-color: #473C8B !important;
+        background-color: #2C3E50 !important;
+    }
+
+    .header-custom {
+        color: #2C3E50 !important;
+        ;
+        /* Màu của nền trang */
+    }
+
+    .nav-link {
+        color: white !important;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .nav-item {
+        color: white !important;
+        font-family: Arial, Helvetica, sans-serif;
     }
 </style>
-<div class="header-custom">
+
+<head class="header-custom">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
+        <div class=" container-fluid">
             <a class="navbar-brand" href="{{ route('admin_home') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Navbar" height="50">
+                <img src="{{ asset('images/logo.png') }}" alt="Navbar" height="60" style="filter: brightness(50);">
             </a>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
@@ -37,8 +54,8 @@
             <!-- Profile dropdown -->
             <div class="dropdown">
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="path/to/profile_image.jpg" alt="Profile" class="rounded-circle me-2" width="40">
-                    <div class="text-dark">{{ session('username') }}</div>
+                    <img src="https://png.pngtree.com/png-vector/20190223/ourlarge/pngtree-admin-rolls-glyph-black-icon-png-image_691507.jpg" alt="Profile" class="rounded-circle me-2" width="40">
+                    <div class="text-dark" style="color:aliceblue !important;font-size:20px !important">{{ session('username') }}</div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="{{ route('admin.edit_profile')}}">Edit Profile</a></li>
@@ -51,6 +68,6 @@
             </div>
         </div>
     </nav>
-</div>
+</head>
 
 <!--end header -->

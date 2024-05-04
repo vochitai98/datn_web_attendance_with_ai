@@ -75,7 +75,7 @@
                     <td class="text-center">
                         <a href="{{ route('admin.teacher_edit',['teacher_id' => $teachers[$i]->id]) }}"><span class="bi bi-eye" style="margin-right:10px;"></span>
                         </a>
-                        <a href="{{ route('admin.teacher_management',['teacher_id' => $teachers[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash"></span>
+                        <a href="{{ route('admin.teacher_management',['teacher_id' => $teachers[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash text-danger"></span>
                         </a>
                     </td>
                     </tr>

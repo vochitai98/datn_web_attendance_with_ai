@@ -15,9 +15,19 @@
 
     <div class="main-content">
         @if(isset($teacher->id))
-        <h6>Home > Teacher management > View</h6>
+        <h6>Home > Teacher management > Update</h6>
         @else
         <h6>Home > Teacher management > Add</h6>
+        @endif
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
         @endif
         <div class="container mt-5">
             <div class="row justify-content-center">
@@ -36,14 +46,15 @@
                         <div class="card-body">
                             <form action="{{ route('admin.teacher_edit_handle') }}" method="POST" enctype="multipart/form-data">
                                 @csrf <!-- Sử dụng trong Laravel để chống CSRF attacks -->
+                                <input type="hidden" class="form-control" id="id" name="id" value="{{ isset($teacher->id) ? $teacher->id : '' }}" required>
                                 @if(!isset($teacher->id))
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="{{ isset($teacher->id) ? $teacher->name : '' }}" required>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password" value="{{ isset($teacher->id) ? $teacher->name : '' }}" required>
+                                    <input type="text" class="form-control" id="password" name="password" placeholder="Enter password" required>
                                 </div>
                                 @endif
                                 <div class="mb-3">
@@ -75,9 +86,9 @@
                                 @else
                                 <button type="submit" class="btn btn-primary me-2">Add</button>
                                 @endif
-                                <button type="button" class="btn btn-secondary" onclick="window.location.href='cancel-page-url'">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancel</button>
                                 @if(isset($teacher->id))
-                                <button type="button" class="btn btn-primary" onclick="window.location.href='cancel-page-url' " style="float: right;">
+                                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route("reset_password", ['username' => $teacher->username, 'email' => $teacher->email]) }}' " style="float: right;">
                                     <i class=" fas fa-key"></i> Reset Password
                                 </button>
                                 @endif
