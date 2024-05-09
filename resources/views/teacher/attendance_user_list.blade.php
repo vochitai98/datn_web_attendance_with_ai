@@ -17,7 +17,7 @@
         <!-- Nội dung trang Class Management -->
         <h6>Home > Attendane management > detail</h6>
         <div class="text-center">
-            <h5>My Class : {{$class->name}}</h5>
+            <h5>My Class : {{session('className')}}</h5>
         </div>
         <br></br>
         <div class="container">
@@ -107,15 +107,16 @@
         <!-- Pagination -->
         <div class="pagination">
             @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            <a href="?page={{ $current_page - 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link">&lt;</a>
             @endif
 
-            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
 
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link">&gt;</a>
                     @endif
         </div>
+
     </div>
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

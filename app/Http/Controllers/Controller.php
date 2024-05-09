@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Classes;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
@@ -56,8 +57,8 @@ class Controller extends BaseController
             if (!Hash::check($password, $teacher->password)) {
                 return redirect()->route('login')->with('error', 'Teacher Password is not corect!');
             }
-            // Nếu tồn tại trong bảng teacher, đây là một teacher
-            session(['username' => $username, 'avt' => $teacher->avt]);
+            $class = Classes::where('teacher_id',$teacher->id)->first();
+            session(['username' => $username, 'avt' => $teacher->avt, 'className' => $class->name]);
             return redirect()->route('teacher_home');
         }
         // Nếu không tìm thấy trong bất kỳ bảng nào, chuyển hướng về trang đăng nhập với thông báo lỗi

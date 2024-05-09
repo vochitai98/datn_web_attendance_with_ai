@@ -9,6 +9,16 @@
 </head>
 
 <body>
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
+    @if (session('errors'))
+    <div class="alert alert-danger">
+        {{ session('errors') }}
+    </div>
+    @endif
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registration Form 1</h2>
         <form action="{{ route('student.register_next_page') }}" method="POST">

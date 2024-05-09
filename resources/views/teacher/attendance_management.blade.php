@@ -43,7 +43,7 @@
         </div>
         @else
         <div class="text-center">
-            <h5>My Class Name : {{$class->name}}</h5>
+            <h5>My Class Name : {{session('className')}}</h5>
         </div>
         <div class="attendance" style="text-align: right;">
             <a href="{{ route('teacher.take_attendance') }}">

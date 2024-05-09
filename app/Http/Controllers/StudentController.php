@@ -70,10 +70,10 @@ class StudentController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
         if ($request->input('password') != $request->input('confirm_password')) {
-            return response()->json(['message' => 'confirm password is not correct!'], 422);
+            return redirect()->back()->with('errors', 'confirm password is not correct!');
         }
         session()->put('registration_data', $request->all());
         $registrationData = session()->get('registration_data');
@@ -95,7 +95,7 @@ class StudentController extends Controller
                 'phone' => 'required|string|max:15|unique:teachers,phone',
                 'address' => 'nullable|string|max:255',
                 'identification' => 'nullable|string',
-                'dob' => 'nullable|date',
+                'dob' => 'required|date',
                 'class_id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'avt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -103,7 +103,7 @@ class StudentController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
         $base_url = 'http://localhost:8888/register';
         // Initialize Guzzle HTTP Client
@@ -127,9 +127,7 @@ class StudentController extends Controller
             ]
         ]);
 
-        // Kiểm tra xem yêu cầu lưu file đã thành công hay không
         if ($response->getStatusCode() == 200) {
-            // Nếu lưu file thành công, thêm người dùng vào cơ sở dữ liệu
             $user = new Student();
             $user->name = $name;
             $user->username = $username;
@@ -140,14 +138,11 @@ class StudentController extends Controller
             $user->class_id = $validatedData['class_id'];
             $user->address = $validatedData['address'];
             $user->identification = $validatedData['identification'];
-            // Thực hiện lưu vào cơ sở dữ liệu
             $user->save();
 
-            // Trả về phản hồi thành công
-            return response()->json(['message' => 'User created successfully']);
+            return redirect()->back()->with('message', 'User created successfully');
         } else {
-            // Nếu có lỗi khi lưu file, trả về phản hồi lỗi
-            return response()->json(['error' => 'Failed to upload image'], 500);
+            return redirect()->back()->with('error', 'Failed to upload image');
         }
     }
 

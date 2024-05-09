@@ -303,6 +303,35 @@ class AdminController extends Controller
             return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
         $user = Student::where('id', $id)->first();
+        $old_class_id = $user->class_id;
+        $new_class_id = $validatedData['class_id'];
+        if($old_class_id != $new_class_id){
+            try {
+                $base_url = 'http://localhost:8888/updateStudentClass';
+                // Initialize Guzzle HTTP Client
+                $client = new Client();
+                // Send POST request to Flask API with file and username
+                $response = $client->request('POST', $base_url, [
+                    'multipart' => [
+                        [
+                            'name'     => 'old_class_id',
+                            'contents' => $old_class_id
+                        ],
+                        [
+                            'name'     => 'new_class_id',
+                            'contents' => $new_class_id
+                        ],
+                        [
+                            'name'     => 'username',
+                            'contents' => $user->username
+                        ],
+                    ]
+                ]);
+                // Check response status code to ensure success
+            } catch (\Exception $e) {
+                return redirect()->back()->with(['errors' => $e->getMessage()]);
+            }
+        }
         $user->name = $validatedData['name'];
         $user->phone = $validatedData['phone'];
         $user->email = $validatedData['email'];

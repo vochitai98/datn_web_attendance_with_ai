@@ -41,7 +41,7 @@ return [
             'port' => env('MAIL_PORT'),
             'encryption' => env('MAIL_ENCRYPTION'),
             'username' => 'vochitaitt@gmail.com',
-            'password' => 'yeuvk9802',
+            'password' => 'nqtogspfnvafnnvx',
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],

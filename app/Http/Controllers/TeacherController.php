@@ -78,7 +78,7 @@ class TeacherController extends Controller
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return response()->json(['message' => 'Validation failed', 'errors' => $e->validator->errors()], 422);
+            return redirect()->back()->with(['errors' => $e->validator->errors()]);
         }
         
         $base_url = 'http://localhost:8888/recognize';
@@ -131,9 +131,9 @@ class TeacherController extends Controller
                     $attendance_record->save();
                 }
             }
-            return response()->json(['message' => 'Attendance successfully!']);
+            return redirect()->back()->with(['message' => 'Attendance successfully!']);
         } else {
-            return response()->json(['error' => 'Failed to upload image'], 500);
+            return redirect()->back()->with(['errors' => 'Failed to upload image']);
         }
         return view('teacher.attendance_management');
     }

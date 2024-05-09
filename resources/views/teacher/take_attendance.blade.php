@@ -51,13 +51,23 @@
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
         <h6>Home > Attendane management</h6>
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
+        @endif
         @if(!isset($class))
         <div class="alert alert-danger">
             Teacher is not attemp class!
         </div>
         @else
         <div class="text-center">
-            <h5>My Class Name : {{$class->name}}</h5>
+            <h5>My Class Name : {{session('className')}}</h5>
         </div>
         <div class="container mt-5">
             <div class="row justify-content-center">

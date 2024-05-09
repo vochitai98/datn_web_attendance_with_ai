@@ -17,7 +17,7 @@
         <!-- Nội dung trang Class Management -->
         <h6>Home > User > attendance user</h6>
         <div class="text-center">
-            <h5>My Class Name : {{$class->name}}</h5>
+            <h5>My Class Name : {{session('className')}}</h5>
         </div>
         <br></br>
         <form id="filterForm" method="GET">
@@ -84,13 +84,13 @@
         <!-- Pagination -->
         <div class="pagination">
             @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            <a href="?page={{ $current_page - 1 }}&student_id={{ $student->id }}&class_id={{ $class->id }}" class="pagination-link">&lt;</a>
             @endif
 
-            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}&student_id={{ $student->id }}&class_id={{ $class->id }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
 
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}&student_id={{ $student->id }}&class_id={{ $class->id }}" class="pagination-link">&gt;</a>
                     @endif
         </div>
         <div>Số buổi vắng : 0 </div>

@@ -9,6 +9,16 @@
 </head>
 
 <body>
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
+    @if (session('errors'))
+    <div class="alert alert-danger">
+        {{ session('errors') }}
+    </div>
+    @endif
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registration Form 2</h2>
         <form action="{{ route('student.register_handle') }}" method="POST" enctype="multipart/form-data">
@@ -23,12 +33,12 @@
             </div>
             <div class="form-group">
                 <label for="address">Address:</label>
-                <input type="phonenumber" class="form-control" id="address" name="address" placeholder="Enter address">
+                <input type="phonenumber" class="form-control" id="address" name="address" placeholder="Enter address" required>
             </div>
 
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
-                <input type="date" class="form-control" id="dob" name="dob">
+                <input type="date" class="form-control" id="dob" name="dob" required>
             </div>
             <div class="form-group">
                 <label for="identification">Student ID:</label>
