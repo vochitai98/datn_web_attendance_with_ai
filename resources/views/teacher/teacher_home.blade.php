@@ -65,116 +65,35 @@
     @include('teacher.header')
     <div class="main-content">
         <h6>Home > Home page </h6>
-        <div class="caption-top">Perpetual calendar</div>
-        <div class="calendar">
-            <div class="header">
-                <button id="prevMonth">&lt;</button>
-                <h2 id="monthYear"></h2>
-                <button id="nextMonth">&gt;</button>
+        <div class="text-center">
+            <h5>My Class Name : {{session('className')}}</h5>
+        </div>
+        <br>
+        <div class="container">
+            <h3 class="text-center">Attendance Statistics</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Student ID</th>
+                            <th>Absent Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($results as $rs)
+                        <tr>
+                            <td>{{ $rs->student_name }}</td>
+                            <td>{{ $rs->student_id }}</td>
+                            <td>{{ $rs->absent_count }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <table id="calendarTable">
-                <thead>
-                    <tr>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
-                        <th>Sun</th>
-                    </tr>
-                </thead>
-                <tbody id="calendarBody">
-                    <!-- Các ô hiển thị ngày trong tháng sẽ được thêm ở đây bằng JavaScript -->
-                </tbody>
-            </table>
         </div>
     </div>
-
-
     @include('footer')
-    <script>
-        // JavaScript
-        document.addEventListener("DOMContentLoaded", function() {
-            const calendarBody = document.getElementById("calendarBody");
-            const monthYear = document.getElementById("monthYear");
-            const prevMonthBtn = document.getElementById("prevMonth");
-            const nextMonthBtn = document.getElementById("nextMonth");
-
-            let currentDate = new Date();
-            let currentMonth = currentDate.getMonth();
-            let currentYear = currentDate.getFullYear();
-
-            renderCalendar(currentMonth, currentYear);
-
-            function renderCalendar(month, year) {
-                // Xóa các ô trong lịch trước khi render lại
-                calendarBody.innerHTML = "";
-
-                // Cập nhật tiêu đề tháng và năm
-                monthYear.textContent = `${getMonthName(month)} ${year}`;
-
-                // Tạo một ngày bắt đầu từ tháng và năm
-                let firstDay = new Date(year, month, 1);
-
-                // Điền các ô trống cho ngày bắt đầu
-                for (let i = 0; i < firstDay.getDay(); i++) {
-                    let cell = document.createElement("td");
-                    calendarBody.appendChild(cell);
-                }
-
-                // Điền các ô với ngày trong tháng
-                while (firstDay.getMonth() === month) {
-                    let cell = document.createElement("td");
-                    cell.textContent = firstDay.getDate();
-                    calendarBody.appendChild(cell);
-
-                    // Highlight ngày hiện tại
-                    if (firstDay.toDateString() === currentDate.toDateString()) {
-                        cell.classList.add("today");
-                    }
-
-                    // Nếu ngày là Chủ nhật thì kết thúc hàng và bắt đầu hàng mới
-                    if (firstDay.getDay() === 6) {
-                        calendarBody.appendChild(document.createElement("tr"));
-                    }
-
-                    firstDay.setDate(firstDay.getDate() + 1);
-                }
-
-                // Điền các ô trống ở cuối tháng
-                while (calendarBody.children.length % 7 !== 0) {
-                    let cell = document.createElement("td");
-                    calendarBody.appendChild(cell);
-                }
-            }
-
-            function getMonthName(month) {
-                const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"
-                ];
-                return monthNames[month];
-            }
-
-            prevMonthBtn.addEventListener("click", function() {
-                currentMonth--;
-                if (currentMonth < 0) {
-                    currentMonth = 11;
-                    currentYear--;
-                }
-                renderCalendar(currentMonth, currentYear);
-            });
-
-            nextMonthBtn.addEventListener("click", function() {
-                currentMonth++;
-                if (currentMonth > 11) {
-                    currentMonth = 0;
-                    currentYear++;
-                }
-                renderCalendar(currentMonth, currentYear);
-            });
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 

@@ -27,6 +27,8 @@ Route::post('/login_handle', [Controller::class, 'loginHandle'])->name('login_ha
 Route::post('/change_password_handle', [Controller::class, 'changePasswordHandle'])->name('change_password_handle');
 Route::post('/edit_profile_handle', [Controller::class, 'editProfileHandle'])->name('edit_profile_handle');
 Route::get('/reset_password', [Controller::class, 'resetPassword'])->name('reset_password');
+Route::get('/forgot_password', [Controller::class, 'forgotPassword'])->name('forgot_password');
+Route::post('/forgot_password_handle', [Controller::class, 'forgotPasswordHandle'])->name('forgot_password_handle');
 
 
 Route::get('/home', [Controller::class, 'home'])->name('home');

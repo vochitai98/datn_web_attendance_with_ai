@@ -68,30 +68,25 @@
     @include('student.header')
     <div class="main-content">
         <h6>Home > Home page </h6>
-        <div class="caption-top">Perpetual calendar</div>
-        <div class="calendar">
-            <div class="header">
-                <button id="prevMonth">&lt;</button>
-                <h2 id="monthYear"></h2>
-                <button id="nextMonth">&gt;</button>
+        <br>
+        <div class="container">
+            <h3 class="text-center">Student information</h3>
+            <div class="row">
+
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Class information</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Class name:</strong> 20TCLC DT5</li>
+                                <li class="list-group-item"><strong>Homeroom teacher:</strong> Teacher</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table id="calendarTable">
-                <thead>
-                    <tr>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
-                        <th>Sun</th>
-                    </tr>
-                </thead>
-                <tbody id="calendarBody">
-                    <!-- Các ô hiển thị ngày trong tháng sẽ được thêm ở đây bằng JavaScript -->
-                </tbody>
-            </table>
         </div>
+
     </div>
 
 

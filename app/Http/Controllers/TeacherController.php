@@ -15,8 +15,23 @@ use Illuminate\Support\Facades\Storage;
 class TeacherController extends Controller
 {
     public function home()
-    {
-        return view('teacher.teacher_home');
+    { 
+        $username = session('username');
+        $teacher = Teacher::where('username',$username)->first();
+        $class = Classes::where('teacher_id', $teacher->id)->first();
+        if(!$class){
+            return redirect()->with(['message'=> 'Teacher Not yet in charge Class!']);
+        }
+
+        $results = DB::table('students AS s')
+        ->select('s.id AS student_id', 's.name AS student_name', 's.identification AS student_id', DB::raw('COUNT(ar.student_id) AS absent_count'))
+        ->leftJoin('attendance_records AS ar', function ($join) {
+            $join->on('s.id', '=', 'ar.student_id')->where('ar.status', '=', 0);
+        })
+            ->where('s.class_id', $class->id)
+            ->groupBy('s.id', 's.name','s.identification')
+            ->get();
+        return view('teacher.teacher_home',compact('results'));
     }
 
     public function attendanceManagement(Request $request)

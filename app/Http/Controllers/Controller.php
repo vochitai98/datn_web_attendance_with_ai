@@ -202,4 +202,13 @@ class Controller extends BaseController
         });
         return redirect()->back()->with(['message' => 'New password sent successfully']);
     }
+
+    public function forgotPassword(){
+        return view('forgot_password');
+    }
+
+    public function forgotPasswordHandle()
+    {
+        return view('forgot_password');
+    }
 }

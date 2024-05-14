@@ -51,7 +51,13 @@ class StudentController extends Controller
         }
 
         $attendance_records = $query->get();
-        return view('student.attendance_management',compact('student', 'attendance_records'));
+        $absent_count = 0;
+        foreach($attendance_records as $arc){
+            if($arc->status == 0){
+                $absent_count++;
+            }
+        }
+        return view('student.attendance_management',compact('student', 'attendance_records','absent_count'));
     }
 
     public function register(Request $request)
@@ -161,7 +167,7 @@ class StudentController extends Controller
             $user = DB::table('students')
             ->where('username', $username)
             ->select('*')
-                ->first();
+            ->first();
             return view('student.edit_profile', compact('user'));
         }
         return view('student.edit_profile', compact('user'));
