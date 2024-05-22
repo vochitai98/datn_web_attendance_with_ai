@@ -65,10 +65,11 @@
     @include('teacher.header')
     <div class="main-content">
         <h6>Home > Home page </h6>
+        <br />
         <div class="text-center">
-            <h5>My Class Name : {{session('className')}}</h5>
+            <h5>Class Name : {{session('className')}}</h5>
         </div>
-        <br>
+        <br />
         <div class="container">
             <h3 class="text-center">Attendance Statistics</h3>
             <div class="table-responsive">

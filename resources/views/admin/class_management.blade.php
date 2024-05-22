@@ -17,6 +17,7 @@
     <!-- Nội dung trang Class Management -->
     <div class="main-content">
         <h6>Home > Class management</h6>
+        <br/>
         @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}

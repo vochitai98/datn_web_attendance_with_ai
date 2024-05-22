@@ -37,16 +37,17 @@
     @include('teacher.header')
     <div class="main-content">
         <h6>Home > Attendance Management</h6>
+        <br />
         @if(!isset($class))
         <div class="alert alert-danger">
             Teacher is not assigned to any class!
         </div>
         @else
         <div class="text-center">
-            <h5>My Class Name : {{session('className')}}</h5>
+            <h5>Class Name : {{session('className')}}</h5>
         </div>
         <div class="attendance" style="text-align: right;">
-            <a href="{{ route('teacher.take_attendance') }}">
+            <a href="{{ route('teacher.take_attendance') }}" style="text-decoration: none;">
                 <span class="bi bi-plus-circle" style="font-size: 2em;"></span>
                 <span style="font-size: 2em;">Take Attendance</span>
             </a>
