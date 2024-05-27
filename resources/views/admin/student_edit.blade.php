@@ -34,7 +34,9 @@
                     <div class="card">
                         @if(isset($student->id))
                         <div class="card-header">
-                            Username : {{$student->username}}
+                            <img src="{{asset($student->image)}}" alt="Avatar" style="width: 150px; height: 150px; border-radius: 50%;">
+                            <div>Username : {{$student->username}}</div>
+
                         </div>
                         @else
                         <div class="card-header">
@@ -67,7 +69,7 @@
                                     <input type="date" class="form-control" id="dayofbirth" name="dayofbirth" value="{{ isset($student->id) ? $student->dayofbirth : '' }}">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="identification" class="form-label">User ID</label>
+                                    <label for="identification" class="form-label">Student ID</label>
                                     <input type="text" class="form-control" id="identification" name="identification" placeholder="Enter identification" value="{{ isset($student->id) ? $student->identification : '' }}" required>
                                 </div>
                                 @if(isset($student))

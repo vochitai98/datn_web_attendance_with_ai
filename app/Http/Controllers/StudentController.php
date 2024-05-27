@@ -9,6 +9,7 @@ use App\Http\Controllers\Http;
 use App\Models\Classes;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -132,7 +133,6 @@ class StudentController extends Controller
                 ]
             ]
         ]);
-
         if ($response->getStatusCode() == 200) {
             $user = new Student();
             $user->name = $name;
@@ -144,11 +144,17 @@ class StudentController extends Controller
             $user->class_id = $validatedData['class_id'];
             $user->address = $validatedData['address'];
             $user->identification = $validatedData['identification'];
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('public/images/image');
+                $imageUrl = Storage::url($imagePath);
+                $imageUrl = str_replace('/storage', 'storage', Storage::url($imagePath));
+                $user->image = $imageUrl;
+            }
+            $user->active = 0;
             $user->save();
-
-            return redirect()->back()->with('message', 'User created successfully');
+            return redirect()->route('login')->with('message', 'User created successfully');
         } else {
-            return redirect()->back()->with('error', 'Failed to upload image');
+            return redirect()->route('student.register_next_page')->with('error', 'Failed to upload image');
         }
     }
 

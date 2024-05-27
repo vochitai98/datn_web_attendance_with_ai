@@ -9,6 +9,46 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Target the link */
+        /* Custom button style */
+        .btn-custom {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fff;
+            /* Green background */
+            color: white;
+            /* White text color */
+            padding: 10px 20px;
+            /* Padding for the button */
+            border: none;
+            /* No border */
+            border-radius: 5px;
+            /* Rounded corners */
+            text-decoration: none;
+            /* Remove underline from the link */
+            font-size: 1.2em;
+            /* Increase font size */
+            transition: background-color 0.3s ease;
+            /* Smooth background color transition */
+        }
+
+        /* Icon within the button */
+        .btn-custom .bi-person-plus {
+            font-size: 1.5em;
+            /* Icon size */
+            margin-right: 10px;
+            /* Space between icon and text */
+        }
+
+        /* Hover effect for the button */
+        .btn-custom:hover {
+            background-color: #fff;
+            /* Darker green on hover */
+            color: white;
+            /* Ensure text color stays white on hover */
+        }
+    </style>
 </head>
 
 <body>
@@ -27,10 +67,11 @@
                     </form>
                 </div>
                 <div class="col-sm-4 text-end">
-                    <a href="{{ route('admin.teacher_edit') }}">
-                        <span class="bi bi-person-plus" style="font-size: 2.0em;"></span>
+                    <a href="{{ route('admin.teacher_edit') }}" class="btn btn-primary add-class-button">
+                        <span class=" bi bi-person-plus"></span> Add teacher
                     </a>
                 </div>
+
             </div>
         </div>
 

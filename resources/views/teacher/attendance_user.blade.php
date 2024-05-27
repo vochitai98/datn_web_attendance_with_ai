@@ -16,6 +16,7 @@
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
         <h6>Home > User > attendance user</h6>
+        <br/>
         <div class="text-center">
             <h5>My Class Name : {{session('className')}}</h5>
         </div>

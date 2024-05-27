@@ -48,6 +48,9 @@ class Controller extends BaseController
             if (!Hash::check($password, $student->password)) {
                 return redirect()->route('login')->with('error', 'Student Password is not corect!');
             }
+            if($student->active == 0){
+                return redirect()->route('student.false');
+            }
             session(['username' => $username, 'avt' => $student->avt]);
             return redirect()->route('student_home');
         }

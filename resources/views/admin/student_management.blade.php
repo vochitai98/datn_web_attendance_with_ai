@@ -9,6 +9,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+
+    </style>
 </head>
 
 <body>
@@ -17,6 +20,16 @@
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
         <h6>Home > Student management</h6>
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+        @if (session('errors'))
+        <div class="alert alert-danger">
+            {{ session('errors') }}
+        </div>
+        @endif
         <br />
         <div class="container">
             <div class="row justify-content-center align-items-center">
@@ -31,7 +44,7 @@
         <form id="filterForm" method="GET">
             <div class="row mb-6">
                 <div class="col-md-2">
-                    <label for="search-select" class="form-label">Select Class</label>
+                    <label for="class_id" class="form-label">Select Class</label>
                     <select class="form-select" id="class_id" name="class_id">
                         <option value="" selected disabled>All</option>
                         @foreach($classes as $class)
@@ -82,6 +95,9 @@
                         </a>
                         <a href="{{ route('admin.student_management',['student_id' => $students[$i]->id]) }}" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"><span class="bi bi-trash text-danger"></span>
                         </a>
+                        <a href="javascript:void(0);" class="toggle-active" data-student-id="{{ $students[$i]->id }}" data-active="{{ $students[$i]->active }}">
+                            <span class="bi {{ $students[$i]->active ? 'bi-toggle-on text-success' : 'bi-toggle-off text-secondary' }}" style="font-size: 2em;"></span>
+                        </a>
                     </td>
                     </tr>
                     @endif
@@ -103,24 +119,54 @@
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
-        function getClassData() {
-            var classId = $('#class_id').val();
-            $.ajax({
-                url: '{{ route("admin.student_management") }}',
-                type: 'GET',
-                data: {
-                    class_id: classId
-                },
-                success: function(response) {
-                    $('body').html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
+        $(document).ready(function() {
+            $('.toggle-active').click(function(e) {
+                e.preventDefault();
+                var toggleElement = $(this);
+                var studentId = toggleElement.data('student-id');
+                var active = toggleElement.data('active');
+
+                console.log('Before AJAX call: ', studentId, active);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('admin.toggle_active') }}",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        student_id: studentId,
+                        active: active
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            var iconElement = toggleElement.find('.bi');
+
+                            console.log('Response active: ', response.active);
+
+                            // Toggle icon classes and update data-active attribute
+                            if (response.active) {
+                                iconElement.removeClass('bi-toggle-off text-secondary').addClass('bi-toggle-on text-success');
+                            } else {
+                                iconElement.removeClass('bi-toggle-on text-success').addClass('bi-toggle-off text-secondary');
+                            }
+
+                            // Update data-active attribute based on response
+                            toggleElement.data('active', response.active);
+
+                            console.log('After update: ', toggleElement.data('active'));
+                        } else {
+                            console.error('Lỗi khi cập nhật trạng thái active.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             });
-        }
+        });
     </script>
+
 </body>
 
 </html>

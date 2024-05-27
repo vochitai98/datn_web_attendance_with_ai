@@ -1,6 +1,6 @@
 body {
-    padding-left: 250px;
-    padding-right: 250px;
+    /* padding-left: 250px;
+    padding-right: 250px; */
     height: 100%;
     position: relative;
 }
@@ -54,6 +54,26 @@ body {
 }
 .footer a{
     text-decoration: none;
+}
+td.text-center a .bi {
+    font-size: 1.5rem;
+    /* Điều chỉnh kích thước icon tùy thích */
+}
+
+/* Màu của icon khi hover */
+td.text-center a:hover .bi {
+    color: #ff0000;
+    /* Màu sắc khi hover, bạn có thể thay đổi mã màu tùy thích */
+}
+
+/* Màu sắc của icon khi active */
+td.text-center a:active .bi {
+    color: #00ff00;
+    /* Màu sắc khi active, bạn có thể thay đổi mã màu tùy thích */
+}
+td.text-center a:nth-child(3) .bi {
+    margin-left: 10px;
+    /* Điều chỉnh khoảng cách tùy thích */
 }
 
 

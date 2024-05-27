@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class AdminController extends Controller
 {
@@ -89,11 +90,35 @@ class AdminController extends Controller
     public function studentManagement(Request $request)
     {
         $student_id = $request->input('student_id');
+        $active = $request->input('active');
         $class_id = $request->input('class_id');
         $classes = DB::table('classes')->get();
         $search = $request->input('search');
         if (isset($student_id)) {
-            Student::where('id', $student_id)->delete();
+            $student = Student::find($student_id);
+            try {
+                $base_url = 'http://localhost:8888/deleteStudent';
+                // Initialize Guzzle HTTP Client
+                $client = new Client();
+                // Send POST request to Flask API with file and username
+                $response = $client->request('POST', $base_url, [
+                    'multipart' => [
+                        [
+                            'name'     => 'username',
+                            'contents' => $student->username
+                        ],
+                        [
+                            'name'     => 'classId',
+                            'contents' => $student->class_id
+                        ],
+                    ]
+                ]);
+                // Check response status code to ensure success
+            } catch (\Exception $e) {
+                return redirect()->back()->with(['errors' => $e->getMessage()]);
+            }
+            $student->delete();
+            return redirect()->back()->with(['message' => "Student deleted successfully"]);
         }
         $query = DB::table('students')
             ->join('classes', 'classes.id', '=', 'students.class_id')
@@ -362,4 +387,27 @@ class AdminController extends Controller
         }
         return view('admin.edit_profile', compact('username'));
     }
+
+    public function toggleActive(Request $request)
+    {
+        $student = Student::find($request->student_id);
+
+        if ($student) {
+            // Toggle trạng thái active dựa trên giá trị hiện tại
+            $student->active = !$request->active;
+            $student->save();
+            if(!$student->active){
+                $student->active = 0;
+            }
+            // Trả về trạng thái mới sau khi cập nhật
+            return response()->json([
+                'success' => true,
+                'active' => $student->active
+            ]);
+        }
+
+        return response()->json(['success' => false], 400);
+    }
+
+
 }

@@ -21,7 +21,7 @@
     @endif
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registration Form 1</h2>
-        <form action="{{ route('student.register_next_page') }}" method="POST">
+        <form action="{{ route('student.register_next_page') }}" method="post">
             @csrf
             <div class="form-group">
                 <label for="username">User name:</label>

@@ -21,7 +21,7 @@
     @endif
     <div class="container mt-5">
         <h2 class="text-center mb-4">Registration Form 2</h2>
-        <form action="{{ route('student.register_handle') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('student.register_handle') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="fullname">Full name:</label>
@@ -56,10 +56,6 @@
             <div class="form-group">
                 <label for="profile_pic">image:</label>
                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
-            </div>
-            <div class="form-group">
-                <label for="profile_pic">Avatar:</label>
-                <input type="file" class="form-control-file" id="avt" name="avt" accept="image/*">
             </div>
             <div class="form-group d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" id="goBack">Back</button>

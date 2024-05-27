@@ -29,6 +29,30 @@
             margin-top: 10px;
             max-height: 100px;
         }
+
+        .attendance {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .attendance a {
+            display: inline-block;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .attendance a:hover {
+            background-color: #0056b3;
+        }
+
+        .attendance a span {
+            margin-left: 5px;
+            font-size: 1.5em;
+        }
     </style>
 </head>
 
@@ -46,10 +70,10 @@
         <div class="text-center">
             <h5>Class Name : {{session('className')}}</h5>
         </div>
-        <div class="attendance" style="text-align: right;">
-            <a href="{{ route('teacher.take_attendance') }}" style="text-decoration: none;">
-                <span class="bi bi-plus-circle" style="font-size: 2em;"></span>
-                <span style="font-size: 2em;">Take Attendance</span>
+        <div class="attendance">
+            <a href="{{ route('teacher.take_attendance') }}">
+                <i class="bi bi-plus-circle"></i>
+                <span>Take Attendance</span>
             </a>
         </div>
         <form id="filterForm" method="GET">

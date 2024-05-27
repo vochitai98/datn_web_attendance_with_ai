@@ -3,57 +3,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Attendance Class With AI</title>
     <style>
-        .calendar {
-            font-family: Arial, sans-serif;
-            margin: 20px auto;
-            width: 50%;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        #monthYear {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        table {
+        .table-responsive {
             width: 100%;
+            overflow-x: auto;
         }
 
-        table th,
-        table td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 5px;
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            border-collapse: collapse;
+            /* Ensure the table borders collapse */
         }
 
-        table th {
-            background-color: #f2f2f2;
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
         }
 
-        table td {
-            cursor: pointer;
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
         }
 
-        table td.today {
-            background-color: #e0e0e0;
+        .table tbody+tbody {
+            border-top: 2px solid #dee2e6;
         }
 
-        table td.selected {
-            background-color: #2196f3;
-            color: white;
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .table th {
+            text-align: left;
         }
     </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

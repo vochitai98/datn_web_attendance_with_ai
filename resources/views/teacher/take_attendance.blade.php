@@ -1,4 +1,3 @@
-</html>
 <!doctype html>
 <html lang="en">
 
@@ -11,36 +10,57 @@
     <style>
         /* CSS for attendance form */
         .form-container {
-            background-color: #f8f9fa;
-            /* Form background color */
-            padding: 20px;
-            /* Spacing between content and form border */
+            background-color: #ffffff;
+            padding: 30px;
             border-radius: 10px;
-            /* Rounded corners of form */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Box shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .form-title {
             text-align: center;
-            /* Center-align title */
             font-size: 24px;
-            /* Title font size */
             font-weight: bold;
-            /* Bold title */
             margin-bottom: 20px;
-            /* Spacing between title and form content */
+            color: #007bff;
         }
 
         .preview-image {
             max-width: 100%;
-            /* Maximum width for image */
             height: auto;
-            /* Maintain aspect ratio */
             margin-top: 10px;
-            /* Spacing between image and form elements */
-            max-height: 100px;
-            /* Set maximum height for image */
+            max-height: 200px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input[type="file"] {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 6px 12px;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        .main-content h6 {
+            font-weight: bold;
+        }
+
+        .main-content .text-center h5 {
+            margin-bottom: 20px;
+            color: #343a40;
         }
     </style>
 </head>
@@ -50,7 +70,8 @@
     @include('teacher.header')
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
-        <h6>Home > Attendane management</h6>
+        <h6>Home > Attendance Management</h6>
+        <br />
         @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}
@@ -63,32 +84,32 @@
         @endif
         @if(!isset($class))
         <div class="alert alert-danger">
-            Teacher is not attemp class!
+            Teacher is not assigned to any class!
         </div>
         @else
         <div class="text-center">
-            <h5>My Class Name : {{session('className')}}</h5>
+            <h5>Class Name : {{session('className')}}</h5>
         </div>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="form-container">
-                        <h2 class="form-title">Teacher Attendance Form</h2> <!-- Title in English -->
+                        <h2 class="form-title">Teacher Attendance Form</h2>
                         <form action="{{ route('teacher.process_attendance') }}" method="POST" enctype="multipart/form-data">
                             @csrf <!-- Laravel CSRF token -->
                             <input type="hidden" name="classId" value="{{$class->id}}">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="date">Date of Attendance:</label>
                                 <input type="date" class="form-control" id="date" name="date" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="image">Image:</label>
                                 <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3 text-center">
                                 <img id="imagePreview" class="preview-image" src="#" alt="Preview Image"> <!-- Image preview -->
                             </div>
-                            <div class="form-group text-center"> <!-- Center-align attendance button -->
+                            <div class="form-group text-center">
                                 <button type="submit" class="btn btn-primary">Take Attendance</button>
                             </div>
                         </form>
@@ -96,13 +117,21 @@
                 </div>
             </div>
         </div>
-
-
-
         @endif
     </div>
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('imagePreview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
 
 </html>

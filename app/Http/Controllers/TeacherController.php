@@ -113,8 +113,9 @@ class TeacherController extends Controller
             ]
         ]);
         $responseData = $response->getBody()->getContents();
-        $username_attendance_list = json_decode($responseData, true);
+        $dataArray = json_decode($responseData, true);
         if ($response->getStatusCode() == 200) {
+            $attendance_records=[];
             $imagePath = $request->file('image')->storeAs('public/images/attendance', $request->file('image')->getClientOriginalName());
             $imageUrl = url(Storage::url($imagePath));
 
@@ -132,21 +133,28 @@ class TeacherController extends Controller
                 $students = DB::table('students')
                     ->select('students.id','students.username')
                     ->where('class_id', $class->id)
+                    ->where('active',1)
                     ->get();
                 foreach($students as $student){
                     $attendance_record = new AttendanceRecords();
                     $attendance_record->student_id = $student->id;
                     $attendance_record->image_id = $image->id;
                     $attendance_record->attendance_date = $validatedData['date'];
-                    if (in_array($student->username, $username_attendance_list['text'])) {
+                    if (in_array($student->username, $dataArray['text'])) {
                         $attendance_record->status = true;
                     } else {
                         $attendance_record->status = false;
                     }
                     $attendance_record->save();
                 }
+                $attendance_records = DB::table('attendance_records')
+                    ->join('students', 'attendance_records.student_id', '=', 'students.id')
+                    ->select('students.name', 'attendance_records.status')
+                    ->where('attendance_records.attendance_date','=', $validatedData['date'])
+                    ->get();
             }
-            return redirect()->back()->with(['message' => 'Attendance successfully!']);
+            return view('teacher.infor_attendance', ['base64Image' => $dataArray['image'],'attendance_records' => $attendance_records]);
+            //return redirect()->route('teacher.infor_attendance')->with(['message' => 'Attendance successfully!']);
         } else {
             return redirect()->back()->with(['errors' => 'Failed to upload image']);
         }

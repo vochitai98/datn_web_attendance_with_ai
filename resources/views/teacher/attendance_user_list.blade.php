@@ -16,6 +16,7 @@
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
         <h6>Home > Attendane management > detail</h6>
+        <br/>
         <div class="text-center">
             <h5>My Class : {{session('className')}}</h5>
         </div>

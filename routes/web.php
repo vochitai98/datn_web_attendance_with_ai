@@ -21,6 +21,10 @@ use App\Http\Controllers\TeacherController;
 Route::get('/', function () {
     return view('login');
 });
+
+Route::get('false', function () {
+    return view('student.false');
+})->name('student.false');
 //login page
 Route::get('/login', [Controller::class, 'login'])->name('login');
 Route::post('/login_handle', [Controller::class, 'loginHandle'])->name('login_handle');
@@ -29,6 +33,7 @@ Route::post('/edit_profile_handle', [Controller::class, 'editProfileHandle'])->n
 Route::get('/reset_password', [Controller::class, 'resetPassword'])->name('reset_password');
 Route::get('/forgot_password', [Controller::class, 'forgotPassword'])->name('forgot_password');
 Route::post('/forgot_password_handle', [Controller::class, 'forgotPasswordHandle'])->name('forgot_password_handle');
+
 
 
 Route::get('/home', [Controller::class, 'home'])->name('home');
@@ -43,6 +48,7 @@ Route::get('/teacher_management/teacher_edit', [AdminController::class, 'teacher
 Route::get('/student_management/student_edit', [AdminController::class, 'studentEdit'])->name('admin.student_edit');
 Route::post('/student_management/student_edit_handle', [AdminController::class, 'studentEditHandle'])->name('admin.student_edit_handle');
 Route::post('/teacher_management/teacher_edit_handle', [AdminController::class, 'teacherEditHandle'])->name('admin.teacher_edit_handle');
+Route::post('/toggle_active', [AdminController::class, 'toggleActive'])->name('admin.toggle_active');
 
 Route::post('/class_management/class_add_handle', [AdminController::class, 'classEditHandle'])->name('admin.class_add_handle');
 Route::get('/admin_change_password', [AdminController::class, 'changePassword'])->name('admin.change_password');

@@ -21,6 +21,11 @@
         {{ session('error') }}
     </div>
     @endif
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
     <div class="container login-container">
         <h2 class="text-center mb-4">Login</h2>
         <form id="loginForm" action="{{ route('login_handle') }}" method="post">
