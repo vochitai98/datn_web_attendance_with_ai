@@ -25,29 +25,26 @@
             <div class="row mb-6">
                 <div class="col-md-2">
                     <label for="dateSearch" class="form-label">Start Date</label>
-                    <input type="date" class="form-control" name="startDate" id="startDate" placeholder="Enter date">
+                    <input type="date" class="form-control" name="startDate" id="startDate" placeholder="Enter date" value="{{ request('startDate') }}">
                 </div>
                 <div class="col-md-2">
                     <label for="dateSearch" class="form-label">End Date</label>
-                    <input type="date" class="form-control" name="endDate" id="endDate" placeholder="Enter date">
+                    <input type="date" class="form-control" name="endDate" id="endDate" placeholder="Enter date" value="{{ request('endDate') }}">
                 </div>
                 <div class="col-md-2">
                     <label for="statusSearch" class="form-label">Select Status</label>
                     <select class="form-select form-select-sm" id="status" name="status" style="height: 38px;">
                         <option value="">All</option>
-                        <option value="1">Present</option>
-                        <option value="0">Absent</option>
+                        <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Present</option>
+                        <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Absent</option>
                     </select>
                 </div>
                 <div class="col-md-1 mt-auto d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary" style="height: 40px;">Filter</button>
                 </div>
             </div>
-
         </form>
-
-
-
+        
         <table class="table">
             <caption class="caption-top">Attendance List</caption>
             <thead>
@@ -64,6 +61,9 @@
                 $totalRecords = count($attendance_records);
                 $totalPages = ceil($totalRecords / $perPage);
                 $current_page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+                $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
+                $status = isset($_GET['status']) ? $_GET['status'] : null;
                 $start = ($current_page - 1) * $perPage;
                 $end = $start + $perPage - 1;
                 @endphp
@@ -90,13 +90,13 @@
         </table>
         <div class="pagination">
             @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            <a href="?page={{ $current_page - 1 }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link">&lt;</a>
             @endif
 
-            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
 
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link">&gt;</a>
                     @endif
         </div>
         <div style="font-size: 20px;">Absent count : {{$absent_count}} </div>

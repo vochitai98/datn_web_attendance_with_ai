@@ -17,7 +17,10 @@ class AdminController extends Controller
     public function home()
     {
         $username = session('username');
-        return view('admin.admin_home');
+        $studentCounts = Student::get()->count();
+        $teacherCounts = Teacher::get()->count();
+        $classCounts = Classes::get()->count();
+        return view('admin.admin_home',compact('studentCounts', 'teacherCounts', 'classCounts'));
     }
 
     public function classManagement(Request $request)

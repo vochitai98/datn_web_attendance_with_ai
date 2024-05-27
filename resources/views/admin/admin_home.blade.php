@@ -29,7 +29,7 @@
     @include('admin.header')
     <div class="main-content">
         <h6>Home > Home page </h6>
-        <br/>
+        <br />
         <div class="container">
             <h1 class="text-center">Statistics</h1>
             <div class="row">
@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <i class="fas fa-user-graduate fa-3x icon"></i> <!-- Font Awesome icon for students -->
                             <h5 class="card-title">Student Statistics</h5>
-                            <p class="card-text">Total number of students: <span id="totalStudents">2000</span></p>
+                            <p class="card-text">Total number of students: <span id="totalStudents">{{$studentCounts}}</span></p>
                         </div>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                         <div class="card-body">
                             <i class="fas fa-chalkboard-teacher fa-3x icon"></i> <!-- Font Awesome icon for teachers -->
                             <h5 class="card-title">Teacher Statistics</h5>
-                            <p class="card-text">Total number of teachers: <span id="totalTeachers">500</span></p>
+                            <p class="card-text">Total number of teachers: <span id="totalTeachers">{{$teacherCounts}}</span></p>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <div class="card-body">
                             <i class="fas fa-chalkboard fa-3x icon"></i> <!-- Font Awesome icon for classes -->
                             <h5 class="card-title">Class Statistics</h5>
-                            <p class="card-text">Total number of classes: <span id="totalClasses">50</span></p>
+                            <p class="card-text">Total number of classes: <span id="totalClasses">{{$classCounts}}</span></p>
                         </div>
                     </div>
                 </div>

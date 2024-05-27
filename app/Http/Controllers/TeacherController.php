@@ -24,12 +24,12 @@ class TeacherController extends Controller
         }
 
         $results = DB::table('students AS s')
-        ->select('s.id AS student_id', 's.name AS student_name', 's.identification AS student_id', DB::raw('COUNT(ar.student_id) AS absent_count'))
+        ->select('s.id AS id', 's.name AS student_name', 's.identification AS student_id','s.class_id as class_id', DB::raw('COUNT(ar.student_id) AS absent_count'))
         ->leftJoin('attendance_records AS ar', function ($join) {
             $join->on('s.id', '=', 'ar.student_id')->where('ar.status', '=', 0);
         })
             ->where('s.class_id', $class->id)
-            ->groupBy('s.id', 's.name','s.identification')
+            ->groupBy('s.id', 's.name','s.identification','s.class_id')
             ->get();
         return view('teacher.teacher_home',compact('results'));
     }
@@ -211,7 +211,12 @@ class TeacherController extends Controller
         $attendance_users = $query->get();
         $class = DB::table('classes')->find($class_id);
         $student = DB::table('students')->find($student_id);
-        return view('teacher.attendance_user', compact('attendance_users', 'class', 'student'));
+        $absentCount = DB::table('attendance_records')
+            ->where('status',0)
+            ->where('student_id',$student_id)
+            ->get()
+            ->count();
+        return view('teacher.attendance_user', compact('attendance_users', 'class', 'student', 'absentCount'));
     }
 
     public function changePassword()

@@ -41,6 +41,7 @@
         }
     </style>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
@@ -59,18 +60,24 @@
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Student ID</th>
-                            <th>Absent Count</th>
+                        <tr class="text-center">
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Student ID</th>
+                            <th class="text-center">Absent Count</th>
+                            <th class="text-center">View detail</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($results as $rs)
                         <tr>
-                            <td>{{ $rs->student_name }}</td>
-                            <td>{{ $rs->student_id }}</td>
-                            <td>{{ $rs->absent_count }}</td>
+                            <td class="text-center">{{ $rs->student_name }}</td>
+                            <td class="text-center">{{ $rs->student_id }}</td>
+                            <td class="text-center">{{ $rs->absent_count }}</td>
+                            <td class="text-center">
+                                <a href="{{ route('teacher.attendance_user',['student_id' => $rs->id, 'class_id' => $rs->class_id]) }}">
+                                    <span class="bi bi-eye"></span>
+                                </a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

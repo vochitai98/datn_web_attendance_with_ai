@@ -1,4 +1,3 @@
-</html>
 <!doctype html>
 <html lang="en">
 
@@ -16,7 +15,7 @@
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
         <h6>Home > Attendane management > detail</h6>
-        <br/>
+        <br />
         <div class="text-center">
             <h5>My Class : {{session('className')}}</h5>
         </div>
@@ -34,7 +33,6 @@
             </div>
         </div>
 
-
         <form id="filterForm" method="GET">
             <input type="hidden" name="attendance_date" value="{{$date}}">
             <input type="hidden" name="class_id" value="{{$class->id}}">
@@ -42,9 +40,9 @@
                 <div class="col-md-2">
                     <label for="statusSearch" class="form-label">Select Status</label>
                     <select class="form-select form-select-sm" name="statusSearch" id="statusSearch">
-                        <option value="" selected>All</option>
-                        <option value="1">Present</option>
-                        <option value="0">Absent</option>
+                        <option value="" @if(request('statusSearch')=='' ) selected @endif>All</option>
+                        <option value="1" @if(request('statusSearch')=='1' ) selected @endif>Present</option>
+                        <option value="0" @if(request('statusSearch')=='0' ) selected @endif>Absent</option>
                     </select>
                 </div>
                 <div class="col-md-1 mt-auto d-flex justify-content-end">
@@ -108,13 +106,13 @@
         <!-- Pagination -->
         <div class="pagination">
             @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link">&lt;</a>
+            <a href="?page={{ $current_page - 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}&statusSearch={{ request('statusSearch') }}&search={{ request('search') }}" class="pagination-link">&lt;</a>
             @endif
 
-            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}&attendance_date={{ $date }}&class_id={{ $class->id }}&statusSearch={{ request('statusSearch') }}&search={{ request('search') }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
 
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}" class="pagination-link">&gt;</a>
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}&attendance_date={{ $date }}&class_id={{ $class->id }}&statusSearch={{ request('statusSearch') }}&search={{ request('search') }}" class="pagination-link">&gt;</a>
                     @endif
         </div>
 
