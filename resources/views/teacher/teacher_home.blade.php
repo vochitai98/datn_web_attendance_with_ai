@@ -49,14 +49,25 @@
     <!-- header -->
     @include('teacher.header')
     <div class="main-content">
-        <h6>Home > Home page </h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+            </ol>
+        </nav>
         <br />
+        @if(!isset($class))
+        <div class="alert alert-danger">
+            Teacher is not assigned to any class!
+        </div>
+        @else
         <div class="text-center">
             <h5>Class Name : {{session('className')}}</h5>
         </div>
         <br />
         <div class="container">
             <h3 class="text-center">Attendance Statistics</h3>
+            <h5>Total : {{$studentCount}} students</h5>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -84,6 +95,7 @@
                 </table>
             </div>
         </div>
+        @endif
     </div>
     @include('footer')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -69,8 +69,12 @@
     <!-- header -->
     @include('teacher.header')
     <div class="main-content">
-        <!-- Nội dung trang Class Management -->
-        <h6>Home > Attendance Management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Attendance Management</a></li>
+                <li class="breadcrumb-item"><a href="#">Take attendance </a></li>
+            </ol>
+        </nav>
         <br />
         @if (session('message'))
         <div class="alert alert-success">

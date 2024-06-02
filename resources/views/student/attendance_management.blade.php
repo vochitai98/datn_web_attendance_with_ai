@@ -15,7 +15,11 @@
     <!-- header -->
     @include('student.header')
     <div class="main-content">
-        <h6>Home > Attendane management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#"> Attendane management</a></li>
+            </ol>
+        </nav>
         <br>
         <div class="text-center">
             <h5>My Class : {{$student->className}}</h5>
@@ -44,7 +48,7 @@
                 </div>
             </div>
         </form>
-        
+
         <table class="table">
             <caption class="caption-top">Attendance List</caption>
             <thead>

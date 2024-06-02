@@ -14,7 +14,12 @@
     @include('teacher.header')
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
-        <h6>Home > Attendane management > detail</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Attendance Management</a></li>
+                <li class="breadcrumb-item"><a href="#">Detail </a></li>
+            </ol>
+        </nav>
         <br />
         <div class="text-center">
             <h5>My Class : {{session('className')}}</h5>
@@ -64,9 +69,9 @@
                     <th scope="col" class="text-center">Phone</th>
                     <th scope="col" class="text-center">Address</th>
                     <th scope="col" class="text-center">Email</th>
-                    <th scope="col" class="text-center">Status</th>
+                    <th scope="col" class="text-center">Present</th>
 
-                    <th scope="col" class="text-center">View Detail Attendance Records</th>
+                    <!-- <th scope="col" class="text-center">View Detail Attendance Records</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -93,11 +98,11 @@
                         <span class="badge bg-danger">x</span> <!-- Label tích x (chưa điểm danh) -->
                         @endif
                     </td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         <a href="{{ route('teacher.attendance_user',['student_id' => $attendance_records[$i]->id, 'class_id' => $class->id]) }}">
                             <span class="bi bi-eye"></span>
                         </a>
-                    </td>
+                    </td> -->
                     </tr>
                     @endif
                     @endfor

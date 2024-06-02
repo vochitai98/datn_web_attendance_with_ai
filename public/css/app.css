@@ -75,5 +75,16 @@ td.text-center a:nth-child(3) .bi {
     margin-left: 10px;
     /* Điều chỉnh khoảng cách tùy thích */
 }
+.breadcrumb-item a {
+    text-decoration: none;
+    /* Loại bỏ gạch chân */
+    color: #007bff;
+    /* Màu cho liên kết */
+}
+
+.breadcrumb-item a:hover {
+    color: #0056b3;
+    /* Màu khi di chuột qua liên kết */
+}
 
 

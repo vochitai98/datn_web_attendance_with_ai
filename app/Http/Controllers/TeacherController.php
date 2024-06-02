@@ -20,9 +20,8 @@ class TeacherController extends Controller
         $teacher = Teacher::where('username',$username)->first();
         $class = Classes::where('teacher_id', $teacher->id)->first();
         if(!$class){
-            return redirect()->with(['message'=> 'Teacher Not yet in charge Class!']);
+            return view('teacher.teacher_home');
         }
-
         $results = DB::table('students AS s')
         ->select('s.id AS id', 's.name AS student_name', 's.identification AS student_id','s.class_id as class_id', DB::raw('COUNT(ar.student_id) AS absent_count'))
         ->leftJoin('attendance_records AS ar', function ($join) {
@@ -31,7 +30,8 @@ class TeacherController extends Controller
             ->where('s.class_id', $class->id)
             ->groupBy('s.id', 's.name','s.identification','s.class_id')
             ->get();
-        return view('teacher.teacher_home',compact('results'));
+        $studentCount = $results->count();
+        return view('teacher.teacher_home',compact('results', 'studentCount', 'class'));
     }
 
     public function attendanceManagement(Request $request)
@@ -87,7 +87,21 @@ class TeacherController extends Controller
         try {
             // Validate the incoming request data
             $validatedData = $request->validate([
-                'date' => 'required|date',
+                'date' => [
+                    'required',
+                    'date',
+                    function ($attribute, $value, $fail) use ($request) {
+                        $existingRecord = DB::table('attendance_records')
+                        ->join('students', 'students.id', '=', 'attendance_records.student_id')
+                        ->where('attendance_records.attendance_date', '=', $value)
+                        ->where('students.class_id', '=', $request->classId)
+                        ->exists();
+
+                        if ($existingRecord) {
+                            $fail('The combination of date and class ID already exists.');
+                        }
+                    },
+                ],
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif',
                 'classId' => 'required|exists:classes,id',
             ]);

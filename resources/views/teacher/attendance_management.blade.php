@@ -59,7 +59,11 @@
     <!-- header -->
     @include('teacher.header')
     <div class="main-content">
-        <h6>Home > Attendance Management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Attendance Management</a></li>
+            </ol>
+        </nav>
         <br />
         @if(!isset($class))
         <div class="alert alert-danger">

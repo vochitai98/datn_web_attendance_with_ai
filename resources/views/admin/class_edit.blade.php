@@ -13,9 +13,19 @@
     @include('admin.header')
     <div class="main-content">
         @if(isset($class->id))
-        <h6>Home > Class management > Edit</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Class management</a></li>
+                <li class="breadcrumb-item"><a href="#">Edit</a></li>
+            </ol>
+        </nav>
         @else
-        <h6>Home > Class management > Add</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Class management</a></li>
+                <li class="breadcrumb-item"><a href="#">Add</a></li>
+            </ol>
+        </nav>
         @endif
         @if (session('message'))
         <div class="alert alert-success">
@@ -27,7 +37,7 @@
             {{ session('errors') }}
         </div>
         @endif
-        <br/>
+        <br />
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">

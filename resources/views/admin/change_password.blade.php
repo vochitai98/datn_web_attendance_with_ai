@@ -15,9 +15,12 @@
     <!-- header -->
     @include('admin.header')
     <div class="main-content">
-        <!-- Nội dung trang Class Management -->
-        <h6>Profile > Change password</h6>
-
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                <li class="breadcrumb-item"><a href="#">Change password</a></li>
+            </ol>
+        </nav>
         @include('change_password')
     </div>
     @include('footer')

@@ -28,7 +28,12 @@
     <!-- header -->
     @include('admin.header')
     <div class="main-content">
-        <h6>Home > Home page </h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+            </ol>
+        </nav>
         <br />
         <div class="container">
             <h1 class="text-center">Statistics</h1>

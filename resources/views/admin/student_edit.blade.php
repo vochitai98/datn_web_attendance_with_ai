@@ -14,9 +14,19 @@
     @include('admin.header')
     <div class="main-content">
         @if(isset($student->id))
-        <h6>Home > Student management > Update</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Student management</a></li>
+                <li class="breadcrumb-item"><a href="#">Update</a></li>
+            </ol>
+        </nav>
         @else
-        <h6>Home > Student management > Add</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Student management</a></li>
+                <li class="breadcrumb-item"><a href="#">Add</a></li>
+            </ol>
+        </nav>
         @endif
         @if (session('message'))
         <div class="alert alert-success">

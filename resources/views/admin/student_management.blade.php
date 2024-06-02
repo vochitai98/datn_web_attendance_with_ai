@@ -15,7 +15,11 @@
     @include('admin.header')
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
-        <h6>Home > Student management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Student management</a></li>
+            </ol>
+        </nav>
         @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}

@@ -1,4 +1,3 @@
-</html>
 <!doctype html>
 <html lang="en">
 
@@ -12,12 +11,10 @@
     <style>
         .add-class-button {
             color: #fff;
-            /* Màu sắc chữ */
         }
 
         .add-class-icon {
             margin-right: 5px;
-            /* Khoảng cách giữa icon và văn bản */
         }
     </style>
 </head>
@@ -27,7 +24,11 @@
     @include('admin.header')
     <!-- Nội dung trang Class Management -->
     <div class="main-content">
-        <h6>Home > Class management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Class management</a></li>
+            </ol>
+        </nav>
         <br />
         @if (session('message'))
         <div class="alert alert-success">
@@ -92,13 +93,13 @@
         </table>
         <div class="pagination">
             @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}" class="pagination-link">&lt;</a>
+            <a href="?page={{ $current_page - 1 }}&search={{ isset($search) ? $search : '' }}" class="pagination-link">&lt;</a>
             @endif
 
-            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
+            @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}&search={{ isset($search) ? $search : '' }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
 
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}" class="pagination-link">&gt;</a>
+                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}&search={{ isset($search) ? $search : '' }}" class="pagination-link">&gt;</a>
                     @endif
         </div>
     </div>

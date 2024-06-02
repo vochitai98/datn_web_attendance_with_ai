@@ -56,7 +56,11 @@
     @include('admin.header')
     <div class="main-content">
         <!-- Nội dung trang Class Management -->
-        <h6>Home > Teacher management</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Teacher management</a></li>
+            </ol>
+        </nav>
         <br />
         <div class="container">
             <div class="row justify-content-between align-items-center">

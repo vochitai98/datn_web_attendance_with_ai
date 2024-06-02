@@ -17,8 +17,12 @@
     <!-- header -->
     @include('admin.header')
     <div class="main-content">
-        <h6>Profile > Edit</h6>
-
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                <li class="breadcrumb-item"><a href="#">Edit</a></li>
+            </ol>
+        </nav>
         @include('edit_profile')
 
     </div>

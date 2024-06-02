@@ -16,7 +16,14 @@ class StudentController extends Controller
     public function home()
     {
         $username = session('username');
-        return view('student.student_home');
+        $student_infor = DB::table('students')
+            ->select('students.name', 'students.email', 'students.phone', 'students.dayofbirth', 'students.identification', 'students.address','classes.name as className','teachers.name as teacherName')
+            ->join('classes','classes.id','=','students.class_id')
+            ->join('teachers','teachers.id','=','classes.teacher_id')
+            ->where('students.username','=',$username)
+            ->get()
+            ->first();
+        return view('student.student_home',compact('student_infor'));
     }
 
     public function attendanceManagement(Request $request)
@@ -106,11 +113,12 @@ class StudentController extends Controller
                 'class_id' => 'required',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'avt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'gender' => 'required|boolean'
 
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Handle validation errors
-            return redirect()->back()->with(['errors' => $e->validator->errors()]);
+            return redirect()->route('student.register')->with(['errors' => $e->validator->errors()]);
         }
         $base_url = 'http://localhost:8888/register';
         // Initialize Guzzle HTTP Client
@@ -143,6 +151,7 @@ class StudentController extends Controller
             $user->dayofbirth = $validatedData['dob'];
             $user->class_id = $validatedData['class_id'];
             $user->address = $validatedData['address'];
+            $user->gender = $validatedData['gender'];
             $user->identification = $validatedData['identification'];
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('public/images/image');

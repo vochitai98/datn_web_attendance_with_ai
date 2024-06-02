@@ -9,6 +9,7 @@
       </div>
       @endif
       <div class="container mt-5">
+          <h3 class="text-center">Profile form</h3>
           <div class="row justify-content-center">
               <div class="col-md-6">
                   <div class="card">
@@ -43,6 +44,17 @@
                               <div class="mb-3">
                                   <label for="identification" class="form-label">User ID</label>
                                   <input type="text" class="form-control" id="identification" name="identification" placeholder="Enter identification" value="{{ isset($user->id) ? $user->identification : '' }}" required>
+                              </div>
+                              <div class="mb-3">
+                                  <label class="form-label">Gender</label>
+                                  <div class="form-check">
+                                      <input class="form-check-input" type="radio" name="gender" id="male" value="1" {{ isset($user->gender) && $user->gender == '1' ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="male">Male</label>
+                                  </div>
+                                  <div class="form-check">
+                                      <input class="form-check-input" type="radio" name="gender" id="female" value="0" {{ isset($user->gender) && $user->gender == '0' ? 'checked' : '' }}>
+                                      <label class="form-check-label" for="female">Female</label>
+                                  </div>
                               </div>
                               <div class="mb-3">
                                   <label for="profile_pic">Avatar:</label>

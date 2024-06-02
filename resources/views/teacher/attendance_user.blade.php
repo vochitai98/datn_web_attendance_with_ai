@@ -13,8 +13,12 @@
     <!-- header -->
     @include('teacher.header')
     <div class="main-content">
-        <!-- Nội dung trang Class Management -->
-        <h6>Home > User > attendance user</h6>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="#">Attendance user </a></li>
+            </ol>
+        </nav>
         <br />
         <div class="text-center">
             <h5>My Class Name : {{session('className')}}</h5>

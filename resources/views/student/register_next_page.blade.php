@@ -44,6 +44,23 @@
                 <label for="identification">Student ID:</label>
                 <input type="text" class="form-control" id="identification" name="identification" placeholder="Enter identifi" required>
             </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <div class="d-flex align-items-center">
+                    <div class="form-check mr-3">
+                        <input class="form-check-input" type="radio" name="gender" id="male" value="1" required>
+                        <label class="form-check-label" for="male">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="female" value="0" required>
+                        <label class="form-check-label" for="female">
+                            Female
+                        </label>
+                    </div>
+                </div>
+            </div>
             <div class=" form-group">
                 <label for="class">Class:</label>
                 <select class="form-select" id="class_id" name="class_id" required>

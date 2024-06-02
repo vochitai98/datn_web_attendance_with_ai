@@ -61,6 +61,10 @@ class Controller extends BaseController
                 return redirect()->route('login')->with('error', 'Teacher Password is not corect!');
             }
             $class = Classes::where('teacher_id',$teacher->id)->first();
+            if(!$class){
+                session(['username' => $username, 'avt' => $teacher->avt]);
+                return redirect()->route('teacher_home');
+            }
             session(['username' => $username, 'avt' => $teacher->avt, 'className' => $class->name]);
             return redirect()->route('teacher_home');
         }
@@ -104,7 +108,7 @@ class Controller extends BaseController
                     $user->password = Hash::make($new_password);
                     $user->save();
                     // Return a success message and redirect to the login page
-                    return redirect()->route('login')->with('success', 'Password changed successfully! Please login with your new password.');
+                    return redirect()->route('login')->with('message', 'Password changed successfully! Please login with your new password.');
                 } else {
                     //return back with error message: New password does not match!
                     return back()->with('error', 'New password does not match!');
@@ -143,6 +147,7 @@ class Controller extends BaseController
                 'identification' => 'nullable|string',
                 'dayofbirth' => 'nullable|date',
                 'avt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'gender' => 'required|boolean'
                 // Add validation rules for other fields
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -159,6 +164,7 @@ class Controller extends BaseController
                 $user->address = $validatedData['address'];
                 $user->dayofbirth = $validatedData['dayofbirth'];
                 $user->identification = $validatedData['identification'];
+                $user->gender =$validatedData['gender'];
 
             } else if ($teacherExists) {
                 $user = Teacher::where('username', $username)->first();
@@ -167,6 +173,7 @@ class Controller extends BaseController
                 $user->address = $validatedData['address'];
                 $user->dayofbirth = $validatedData['dayofbirth'];
                 $user->identification = $validatedData['identification'];
+                $user->gender = $validatedData['gender'];
 
             } else {
                 $user = Admin::where('username', $username)->first();
