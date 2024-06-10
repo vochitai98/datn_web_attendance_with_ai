@@ -37,9 +37,9 @@
             {{ session('errors') }}
         </div>
         @endif
-        <br />
         <div class="container mt-5">
             <div class="row justify-content-center">
+                <h3 class="text-center">Class Form</h3>
                 <div class="col-md-6">
                     <div class="card">
                         @if(isset($class->id))

@@ -41,6 +41,7 @@
         @endif
         <div class="container mt-5">
             <div class="row justify-content-center">
+                <h3 class="text-center">Teacher Form</h3>
                 <div class="col-md-6">
                     <div class="card">
                         @if(isset($teacher->id))
@@ -88,8 +89,19 @@
                                     <input type="date" class="form-control" id="dayofbirth" name="dayofbirth" value="{{ isset($teacher->id) ? $teacher->dayofbirth : '' }}">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="identification" class="form-label">User ID</label>
+                                    <label for="identification" class="form-label">Teacher ID</label>
                                     <input type="text" class="form-control" id="identification" name="identification" placeholder="Enter identification" value="{{ isset($teacher->id) ? $teacher->identification : '' }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Gender</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="male" value="1" {{ isset($teacher->gender) && $teacher->gender == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="female" value="0" {{ isset($teacher->gender) && $teacher->gender == '0' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
                                 </div>
                                 @if(isset($teacher->id))
                                 <button type="submit" class="btn btn-primary me-2">Update</button>

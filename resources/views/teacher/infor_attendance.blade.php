@@ -8,49 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        .form-container {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .preview-image {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            max-height: 100px;
-        }
-
-        .attendance {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .attendance a {
-            display: inline-block;
-            text-decoration: none;
-            color: #fff;
-            background-color: #007bff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .attendance a:hover {
-            background-color: #0056b3;
-        }
-
-        .attendance a span {
-            margin-left: 5px;
-            font-size: 1.5em;
+        body {
+            background-color: #f5f5f5;
         }
 
         .class-image {
@@ -58,6 +17,7 @@
             height: auto;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .attendance-list {
@@ -65,19 +25,74 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .attendance-list h5 {
-            margin-top: 20px;
+        .attendance-list h4 {
+            text-align: center;
+            margin-bottom: 20px;
         }
 
-        .attendance-lists {
+        .student-item {
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e9ecef;
         }
 
-        .attendance-list-column {
-            width: 48%;
+        .student-item:last-child {
+            border-bottom: none;
+        }
+
+        .student-image {
+            width: 50%;
+            height: auto;
+            border-radius: 1%;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        .student-details {
+            flex-grow: 1;
+        }
+
+        .student-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .student-status {
+            font-size: 16px;
+            color: #6c757d;
+        }
+
+        .student-status.present {
+            color: green;
+        }
+
+        .student-status.absent {
+            color: red;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
         }
     </style>
 </head>
@@ -86,11 +101,10 @@
     <!-- header -->
     @include('teacher.header')
     <!-- Main content -->
-    <div class="container mt-5">
+    <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
                 <h1>Class Attendance</h1>
-                <p>Capture or upload an image to mark attendance</p>
             </div>
         </div>
 
@@ -106,29 +120,28 @@
                 <div class="attendance-list">
                     <h4>Attendance List</h4>
                     <div class="row">
-                        <div class="col-md-6">
-                            <h5>Present</h5>
-                            <ul class="list-group mb-4" id="presentList">
-                                @foreach($attendance_records as $record)
-                                @if($record->status)
-                                <!-- List of present students -->
-                                <li class="list-group-item">{{ $record->name }}</li>
-                                @endif
-                                @endforeach
-                            </ul>
+                        @foreach($attendance_records as $record)
+                        <div class="col-md-3">
+                            <div class="student-item">
+                                <img src="data:image/jpeg;base64,{{ $base64Image }}" alt="{{ $record->name }}" class="student-image">
+                                <div class="student-details">
+                                    <p class="student-name">{{ $record->name }}</p>
+                                    <p class="student-status {{ $record->status ? 'present' : 'absent' }}">
+                                        {{ $record->status ? 'Present' : 'Absent' }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <h5>Absent</h5>
-                            <ul class="list-group" id="absentList">
-                                @foreach($attendance_records as $record)
-                                @if(!$record->status)
-                                <!-- List of absent students -->
-                                <li class="list-group-item">{{ $record->name }}</li>
-                                @endif
-                                @endforeach
-                            </ul>
-                        </div>
+                        @endforeach
                     </div>
+                    <div style="text-align: center;">
+                        <form action="{{route('teacher.attendance_management')}}" method="GET">
+                            <input type="hidden" name="attendance_date" value="{{$attendance_date}}" />
+                            <input type="submit" name="confirmed" value="Confirmed" class="btn btn-primary" />
+                            <input type="button" name="cancel" value="Cancel" class="btn btn-secondary" onclick="window.location.href='{{ route('teacher.take_attendance') }}'" />
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>

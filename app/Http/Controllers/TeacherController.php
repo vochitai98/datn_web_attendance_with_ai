@@ -25,7 +25,7 @@ class TeacherController extends Controller
         $results = DB::table('students AS s')
         ->select('s.id AS id', 's.name AS student_name', 's.identification AS student_id','s.class_id as class_id', DB::raw('COUNT(ar.student_id) AS absent_count'))
         ->leftJoin('attendance_records AS ar', function ($join) {
-            $join->on('s.id', '=', 'ar.student_id')->where('ar.status', '=', 0);
+            $join->on('s.id', '=', 'ar.student_id')->where('ar.status', '=', 0) ->where('ar.active', '=', 1);
         })
             ->where('s.class_id', $class->id)
             ->groupBy('s.id', 's.name','s.identification','s.class_id')
@@ -36,11 +36,22 @@ class TeacherController extends Controller
 
     public function attendanceManagement(Request $request)
     {
+        $username = session('username');
+        $cf = $request->input('confirmed');
+        if(isset($cf)){
+            $date = $request->input('attendance_date');
+            DB::table('attendance_records')
+            ->join('students', 'attendance_records.student_id', '=', 'students.id')
+            ->join('classes', 'classes.id', '=', 'students.class_id')
+            ->join('teachers', 'teachers.id', '=', 'classes.teacher_id')
+            ->where('attendance_records.attendance_date', $date)
+            ->where('teachers.username', $username)
+            ->update(['attendance_records.active' => 1]);
+        }
         $image_id = $request->input('image_id');
         if (isset($image_id)) {
             Image::where('id', $image_id)->delete();
         }
-        $username = session('username');
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
         $class = DB::table('classes')
@@ -55,8 +66,10 @@ class TeacherController extends Controller
             ->join('students', 'attendance_records.student_id', '=', 'students.id')
             ->join('images', 'attendance_records.image_id', '=', 'images.id')
             ->where('students.class_id', $class->id)
+            ->where('attendance_records.active',1)
             ->select('images.id as image_id','images.image_url', 'attendance_records.attendance_date')
-            ->distinct();
+            ->distinct()
+            ->orderBy('attendance_records.attendance_date', 'desc');
 
         if (isset($startDate)) {
             $query->where('attendance_records.attendance_date', '>=', $startDate);
@@ -74,6 +87,9 @@ class TeacherController extends Controller
 
     public function takeAttendance(Request $request){
         $username = session('username');
+        DB::table('attendance_records')
+        ->where('active', 0)
+        ->delete();
         $class = DB::table('classes')
             ->join('teachers', 'classes.teacher_id', '=', 'teachers.id')
             ->where('teachers.username', $username)
@@ -167,7 +183,7 @@ class TeacherController extends Controller
                     ->where('attendance_records.attendance_date','=', $validatedData['date'])
                     ->get();
             }
-            return view('teacher.infor_attendance', ['base64Image' => $dataArray['image'],'attendance_records' => $attendance_records]);
+            return view('teacher.infor_attendance', ['attendance_date' => $validatedData['date'],'base64Image' => $dataArray['image'],'attendance_records' => $attendance_records]);
             //return redirect()->route('teacher.infor_attendance')->with(['message' => 'Attendance successfully!']);
         } else {
             return redirect()->back()->with(['errors' => 'Failed to upload image']);
@@ -185,6 +201,7 @@ class TeacherController extends Controller
             ->join('students', 'students.id', '=', 'attendance_records.student_id')
             ->where('students.class_id', $class_id)
             ->where('attendance_records.attendance_date', $date)
+            ->where('attendance_records.active', 1)
             ->select('students.id', 'students.name', 'students.identification', 'students.phone', 'students.address', 'students.email', 'attendance_records.status', 'attendance_records.attendance_date');
         if(isset($statusSearch)){
             $query->where('attendance_records.status',$statusSearch);
@@ -212,6 +229,7 @@ class TeacherController extends Controller
         $class_id = $request->input('class_id');
         $query = DB::table('attendance_records')
         ->where('student_id', $student_id)
+        ->where('active', 1)
             ->select('attendance_records.*');
         if (isset($startDate)) {
             $query->where('attendance_date', '>=', $startDate);
@@ -228,6 +246,7 @@ class TeacherController extends Controller
         $absentCount = DB::table('attendance_records')
             ->where('status',0)
             ->where('student_id',$student_id)
+            ->where('active', 1)
             ->get()
             ->count();
         return view('teacher.attendance_user', compact('attendance_users', 'class', 'student', 'absentCount'));

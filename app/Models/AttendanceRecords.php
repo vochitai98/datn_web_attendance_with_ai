@@ -10,5 +10,5 @@ class AttendanceRecords extends Model
     use HasFactory;
     protected $table = 'attendance_records';
 
-    protected $fillable = ['student_id', 'status', 'attendance_date', 'image_id'];
+    protected $fillable = ['student_id', 'status', 'attendance_date', 'active','image_id'];
 }

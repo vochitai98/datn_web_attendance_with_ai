@@ -93,15 +93,8 @@
             </tbody>
         </table>
         <div class="pagination">
-            @if($current_page > 1)
-            <a href="?page={{ $current_page - 1 }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link">&lt;</a>
-            @endif
-
             @for($i = 1; $i <= $totalPages; $i++) <a href="?page={{ $i }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link @if($current_page==$i) active @endif">{{ $i }}</a>
                 @endfor
-
-                @if($current_page < $totalPages) <a href="?page={{ $current_page + 1 }}{{ $startDate ? '&startDate='.$startDate : '' }}{{ $endDate ? '&endDate='.$endDate : '' }}{{ $status ? '&status='.$status : '' }}" class="pagination-link">&gt;</a>
-                    @endif
         </div>
         <div style="font-size: 20px;">Absent count : {{$absent_count}} </div>
     </div>

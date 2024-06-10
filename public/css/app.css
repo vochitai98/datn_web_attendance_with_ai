@@ -30,6 +30,7 @@ body {
 .main-content {
     min-height:80vh ;
     background-color:#ECF0F1;
+    padding-bottom: 20px;
 
 }
 

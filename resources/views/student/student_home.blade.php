@@ -1,4 +1,3 @@
-</html>
 <!doctype html>
 <html lang="en">
 
@@ -14,21 +13,44 @@
             background-color: #f8f9fa;
         }
 
-        .card {
-            margin-bottom: 20px;
-        }
-
-        .card-title {
+        /* Định dạng cho các tiêu đề */
+        .personal-info-title,
+        .class-info-title {
             background-color: #007bff;
-            color: white;
+            /* Màu nền */
+            color: #fff;
+            /* Màu chữ */
             padding: 10px;
-            border-radius: 5px 5px 0 0;
-            margin: -20px -20px 10px -20px;
+            /* Khoảng cách nội dung và biên */
+            margin-bottom: 10px;
+            /* Khoảng cách giữa các phần */
+            border-radius: 5px;
+            /* Bo góc */
         }
 
+        /* Định dạng cho các mục trong danh sách */
         .list-group-item {
             border: none;
+            /* Bỏ viền */
         }
+
+        /* Định dạng cho thẻ div chứa các card */
+        .card {
+            margin-bottom: 20px;
+            /* Khoảng cách giữa các card */
+            border: 1px solid #dee2e6;
+            /* Viền */
+            border-radius: 5px;
+            /* Bo góc */
+        }
+
+        /* Định dạng cho tiêu đề */
+        h3 {
+            color: #007bff;
+            /* Màu chữ */
+        }
+
+        /* Định dạng cho nội dung thẻ div chính */
     </style>
 </head>
 
@@ -43,31 +65,27 @@
             </ol>
         </nav>
         <br>
-        <div class="container">
+        <div class="">
             <h3 class="text-center mb-4">Student Information</h3>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-title text-center">
-                            Personal Information
-                        </div>
+                        <div class="personal-info-title text-center">Personal Information</div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Name:</strong> {{$student_infor->name}}</li>
-                            <li class="list-group-item"><strong>Date of Birth:</strong>{{$student_infor->dayofbirth}}</li>
-                            <li class="list-group-item"><strong>Gender:</strong>Male</li>
-                            <li class="list-group-item"><strong>Email:</strong>{{$student_infor->email}}</li>
-                            <li class="list-group-item"><strong>Phone Number:</strong>{{$student_infor->phone}}</li>
+                            <li class="list-group-item"><strong>Name : </strong> {{$student_infor->name}}</li>
+                            <li class="list-group-item"><strong>Date of Birth : </strong>{{$student_infor->dayofbirth}}</li>
+                            <li class="list-group-item"><strong>Gender : </strong>Male</li>
+                            <li class="list-group-item"><strong>Email : </strong>{{$student_infor->email}}</li>
+                            <li class="list-group-item"><strong>Phone Number : </strong>{{$student_infor->phone}}</li>
                             <li class="list-group-item"><strong>Address:</strong>{{$student_infor->address}}</li>
                             <li class="list-group-item"><strong>Student ID:</strong>{{$student_infor->identification}}</li>
                         </ul>
                     </div>
                     <div class="card">
-                        <div class="card-title text-center">
-                            Class Information
-                        </div>
+                        <div class="class-info-title text-center">Class Information</div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><strong>Class Name:</strong>{{$student_infor->className}}</li>
-                            <li class="list-group-item"><strong>Homeroom Teacher:</strong>{{$student_infor->teacherName}}</li>
+                            <li class="list-group-item"><strong>Class Name : </strong>{{$student_infor->className}}</li>
+                            <li class="list-group-item"><strong>Homeroom Teacher : </strong>{{$student_infor->teacherName}}</li>
                         </ul>
                     </div>
                 </div>

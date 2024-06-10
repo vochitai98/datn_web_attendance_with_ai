@@ -46,7 +46,8 @@ class StudentController extends Controller
         $query = DB::table('attendance_records')
             ->join('images', 'attendance_records.image_id', '=', 'images.id')
             ->select('attendance_records.*','images.image_url')
-            ->where('student_id', $student->id);
+            ->where('student_id', $student->id)
+            ->where('active', 1);
         
         if (isset($startDate)) {
             $query->where('attendance_date','>=', $startDate);

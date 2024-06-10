@@ -269,6 +269,7 @@ class AdminController extends Controller
                     'address' => 'nullable|string|max:255',
                     'identification' => 'nullable|string',
                     'dayofbirth' => 'nullable|date',
+                    'gender' => 'required|boolean'
                     // Add validation rules for other fields
                 ]);
             } catch (\Illuminate\Validation\ValidationException $e) {
@@ -304,6 +305,7 @@ class AdminController extends Controller
         $user->dayofbirth = $validatedData['dayofbirth'];
         $user->address = $validatedData['address'];
         $user->identification = $validatedData['identification'];
+        $user->gender = $validatedData['gender'];
         $user->save();
         if(isset($username)){
             return redirect()->back()->with('message', 'Teacher created successfully!');
@@ -324,6 +326,7 @@ class AdminController extends Controller
                 'identification' => 'nullable|string',
                 'class_id' => 'required|exists:classes,id',
                 'dayofbirth' => 'nullable|date',
+                'gender' => 'required|boolean',
                 // Add validation rules for other fields
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -366,6 +369,7 @@ class AdminController extends Controller
         $user->dayofbirth = $validatedData['dayofbirth'];
         $user->address = $validatedData['address'];
         $user->identification = $validatedData['identification'];
+        $user->gender = $validatedData['gender'];
         $user->class_id = $validatedData['class_id'];
         $user->save();
         return redirect()->back()->with('message', 'Student updated successfully!');

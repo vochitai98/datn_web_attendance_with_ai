@@ -65,7 +65,7 @@
             <h5>Class Name : {{session('className')}}</h5>
         </div>
         <br />
-        <div class="container">
+        <div class="">
             <h3 class="text-center">Attendance Statistics</h3>
             <h5>Total : {{$studentCount}} students</h5>
             <div class="table-responsive">
